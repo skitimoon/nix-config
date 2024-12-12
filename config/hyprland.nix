@@ -87,6 +87,8 @@
 
         # Apps Shortcut
         "$mod CTRL, V, exec, code"
+        "$mod CTRL, B, exec, blueman-manager"
+        "$mod CTRL, escape, exec, poweroff"
 
         "$mod, H, movefocus, l"
         "$mod, J, movefocus, d"

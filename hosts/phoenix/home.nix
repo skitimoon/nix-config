@@ -88,9 +88,6 @@
     obs-studio.enable = true;
     starship.enable = true;
     vscode.enable = true;
-    yazi = {
-      enable = true;
-    };
     zsh = {
       enable = true;
       autosuggestion.enable = true;

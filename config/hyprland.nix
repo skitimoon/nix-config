@@ -145,7 +145,7 @@
       bindl = [
         ", XF86AudioNext, exec, playerctl next"
         ", XF86AudioPause, exec, playerctl play-pause"
-        ", XF86AudioPlayPause, exec, playerctl play-pause"
+        ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioPrev, exec, playerctl previous"
       ];
 

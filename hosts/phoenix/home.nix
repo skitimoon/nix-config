@@ -5,6 +5,7 @@
 }: {
   imports = [
     ../../config/hyprland.nix
+    ../../config/mpv
     ../../config/neovim.nix
     ../../config/rofi.nix
     ../../config/waybar.nix
@@ -70,14 +71,9 @@
       };
     };
 
-    mpv = {
-      enable = true;
-      bindings = {
-        WHEEL_UP = "frame-back-step";
-        WHEEL_DOWN = "frame-step";
-        q = "quit-watch-later";
-      };
-    };
+    # mpv = {
+    #   enable = true;
+    # };
 
     nh = {
       enable = true;

@@ -1,4 +1,5 @@
 [manager]
 append_keymap = [
+  { on = [ "g", "/" ], run = "cd /" , desc = "Cd to /" },
   { on = [ "g", "t" ], run = "cd /tmp" , desc = "Cd to /tmp" }
 ]

@@ -121,6 +121,11 @@
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod SHIFT, 0, movetoworkspace, 10"
+        "$mod CTRL SHIFT, 1, movetoworkspace, 6"
+        "$mod CTRL SHIFT, 2, movetoworkspace, 7"
+        "$mod CTRL SHIFT, 3, movetoworkspace, 8"
+        "$mod CTRL SHIFT, 4, movetoworkspace, 9"
+        "$mod CTRL SHIFT, 5, movetoworkspace, 10"
 
         "$mod, S, togglespecialworkspace, magic"
         "$mod SHIFT, S, movetoworkspace, special:magic"

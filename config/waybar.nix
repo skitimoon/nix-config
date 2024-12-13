@@ -44,9 +44,9 @@ with lib;
           move-to-monitor = true;
         };
         "clock" = {
-          format = " {:L%H:%M}";
+          format = " {:L%x %H:%M}";
           tooltip = true;
-          tooltip-format = "<big>{:%A, %d.%B %Y }</big>\n<tt><small>{calendar}</small></tt>";
+          tooltip-format = "<big>{:%A, %d %B %Y }</big>\n<tt><small>{calendar}</small></tt>";
         };
         "hyprland/window" = {
           max-length = 22;

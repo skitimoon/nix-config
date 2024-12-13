@@ -105,7 +105,7 @@ with lib;
               ""
             ];
           };
-          on-click = "sleep 0.1 && pavucontrol";
+          on-click = "sleep 0.1 && pwvucontrol";
         };
         "custom/exit" = {
           tooltip = false;
@@ -194,7 +194,6 @@ with lib;
           opacity: 0.8;
         }
         #workspaces button.urgent {
-          color: #${config.stylix.base16Scheme.base08};
           background: #${config.stylix.base16Scheme.base04};
         }
         tooltip {

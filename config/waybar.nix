@@ -23,6 +23,7 @@ with lib;
           "idle_inhibitor"
         ];
         modules-right = [
+          "custom/crypto"
           # "custom/hyprbindings"
           "custom/notification"
           "custom/exit"
@@ -117,6 +118,10 @@ with lib;
           format = "";
           # exec = "rofi -show drun";
           on-click = "sleep 0.1 && rofi -show drun";
+        "custom/crypto" = {
+          exec = "curl -s 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT' | jq '.price | tonumber | round'";
+          format = " {}";
+          interval = 10;
         };
         "custom/hyprbindings" = {
           tooltip = false;
@@ -221,7 +226,7 @@ with lib;
           padding: 0px 30px 0px 15px;
           border-radius: 0px 0px 40px 0px;
         }
-        #custom-hyprbindings, #network, #battery,
+        #custom-crypto, #custom-hyprbindings, #network, #battery,
         #custom-notification, #tray, #custom-exit {
           font-weight: bold;
           background: #${config.stylix.base16Scheme.base0F};

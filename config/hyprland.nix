@@ -86,7 +86,8 @@
         "$mod SHIFT, E, movewindow, mon:HDMI-A-1"
 
         # Apps Shortcut
-        "$mod CTRL, V, exec, code"
+        "$mod CTRL, A, exec, pwvucontrol"
+        "$mod CTRL, C, exec, code"
         "$mod CTRL, B, exec, blueman-manager"
         "$mod CTRL, escape, exec, poweroff"
 

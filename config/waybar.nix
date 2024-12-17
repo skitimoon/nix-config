@@ -58,7 +58,7 @@ with lib;
         };
         "memory" = {
           interval = 5;
-          format = " {}%";
+          format = " {}%";
           tooltip = true;
         };
         "cpu" = {
@@ -111,13 +111,14 @@ with lib;
         "custom/exit" = {
           tooltip = false;
           format = "";
-          on-click = "sleep 0.1 && wlogout";
+          on-click = "wlogout";
         };
         "custom/startmenu" = {
           tooltip = false;
           format = "";
           # exec = "rofi -show drun";
-          on-click = "sleep 0.1 && rofi -show drun";
+          on-click = "rofi -show drun";
+        };
         "custom/crypto" = {
           exec = "curl -s 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT' | jq '.price | tonumber | round'";
           format = " {}";
@@ -126,7 +127,7 @@ with lib;
         "custom/hyprbindings" = {
           tooltip = false;
           format = "󱕴";
-          on-click = "sleep 0.1 && list-hypr-bindings";
+          on-click = "list-hypr-bindings";
         };
         "idle_inhibitor" = {
           format = "{icon}";

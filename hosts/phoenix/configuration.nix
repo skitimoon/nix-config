@@ -1,9 +1,14 @@
-{ pkgs, host, username, ... }:
-
 {
-  imports = [ ./hardware-configuration.nix ];
+  pkgs,
+  username,
+  ...
+}: {
+  imports = [./hardware-configuration.nix];
   nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = ["nix-command" "flakes"];
+    extraOptions = ''
+      trusted-users = root yim
+    '';
   };
   nixpkgs.config.allowUnfree = true;
 
@@ -22,13 +27,11 @@
     };
   };
 
-
-  networking.hostName = host;
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.hostName = "phoenix";
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Bluetooth
   hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Bangkok";
@@ -52,39 +55,53 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
-  services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
+  services = {
+    blueman.enable = true;
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
   };
 
   programs = {
     hyprland.enable = true;
     kdeconnect.enable = true;
+    nh = {
+      enable = true;
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep 7 --keep-since 14d";
+      };
+      flake = "/home/${username}/nix-config";
+    };
     zsh.enable = true;
   };
 
-  # Enable sound.
   services = {
     kanata = {
       enable = true;
-      keyboards.default = {
+      keyboards."all" = {
         extraDefCfg = "process-unmapped-keys yes";
         config = ''
           (defsrc
             f1             f3                 f4             f5         f6         f7
-            tab       w
-                 a    s    d     h    j    k   l
+            1       2          3       4       5       6       7       8       9       0       ScrollLock
+            tab     q          w       e
+                    a          s       d               h       j       k       l
           )
           (deflayer default
             MediaPlayPause MediaTrackPrevious MediaTrackNext VolumeMute VolumeDown VolumeUp
-            @tab      _
-                 _    _    _     _    _    _   _
+            _       _          _       _       _       _       _       _       _       _       NumLock
+            @tab    _          _       _
+                    _          _       _               _       _       _       _
           )
           (deflayer nav
-            _              _                  _              _          _          _
-            _         up
-                 left down right left down up  right
+            f1             f3                 f4             f5         f6         f7
+            Numpad1 Numpad2    Numpad3 Numpad4 Numpad5 Numpad6 Numpad7 Numpad8 Numpad9 Numpad0 NumLock
+            _       VolumeDown up      VolumeUp
+                    left       down    right           left down up  right
           )
           (defalias
             tab (tap-hold-press 200 200 tab (layer-while-held nav))
@@ -96,13 +113,17 @@
       enable = true;
       pulse.enable = true;
     };
+    printing = {
+      enable = true;
+      drivers = [pkgs.epson-escpr];
+    };
   };
 
   security.sudo.wheelNeedsPassword = false;
 
   users.users."${username}" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     shell = pkgs.zsh;
   };
 
@@ -112,6 +133,7 @@
     neovim
     pwvucontrol
     wget
+    wl-clipboard
   ];
 
   # For Logseq
@@ -120,7 +142,7 @@
   ];
 
   fonts.packages = [
-    (pkgs.nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+    (pkgs.nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
     # pkgs.nerd-fonts.fira-code
     # pkgs.nerd-fonts.jetbrains-mono
   ];
@@ -135,9 +157,9 @@
 
   stylix = {
     enable = true;
-    autoEnable = true;
+    # autoEnable = false;
     cursor = {
-      package = pkgs.nordzy-cursor-theme;  # pkgs.bibata-cursors;
+      package = pkgs.nordzy-cursor-theme; # pkgs.bibata-cursors;
       name = "Nordzy-cursors";
       size = 24;
     };
@@ -146,7 +168,7 @@
     opacity.terminal = 0.8;
     fonts = {
       monospace = {
-        package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
+        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
         # package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
@@ -159,10 +181,10 @@
         name = "Montserrat";
       };
       sizes = {
-      applications = 10;
-      terminal = 10;
-      desktop = 8;
-      #   popups = 12;
+        applications = 10;
+        terminal = 10;
+        desktop = 10;
+        #   popups = 12;
       };
     };
   };

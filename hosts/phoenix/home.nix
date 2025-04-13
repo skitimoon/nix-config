@@ -1,22 +1,26 @@
 {
   pkgs,
+  pkgs-unstable,
   username,
   ...
 }: {
   imports = [
     ../../config/hyprland.nix
-    ../../config/mpv
-    ../../config/neovim.nix
+    ../../config/mpv.nix
+    ../../config/nvf.nix
     ../../config/rofi.nix
     ../../config/waybar.nix
     ../../config/wlogout.nix
-    ../../config/yazi
+    ../../config/yazi.nix
+    ../../config/zsh.nix
   ];
 
   # Home Manager Setting
-  home.username = "${username}";
-  home.homeDirectory = "/home/${username}";
-  home.stateVersion = "24.11";
+  home = {
+    inherit username;
+    homeDirectory = "/home/${username}";
+    stateVersion = "24.11";
+  };
 
   programs.home-manager.enable = true;
 
@@ -35,26 +39,33 @@
   };
 
   home.packages = with pkgs; [
-    _64gram
+    pkgs-unstable.ayugram-desktop
     bat
+    brave
+    code-cursor
+    pkgs-unstable.devenv
+    eza
     fd
-    floorp
     jq
-    kotatogram-desktop
     lazygit
     localsend
     logseq
-    popcorntime
     qtscrcpy
     ripgrep
-    super-productivity
+    pkgs-unstable.super-productivity
     swww
     thunderbird
     tldr
     tlwg
+    vesktop
   ];
 
   programs = {
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+    floorp.enable = true;
     fzf.enable = true;
     git = {
       enable = true;
@@ -67,42 +78,18 @@
       settings = {
         enable_audio_bell = false;
         scrollback_lines = 50000;
-        visual_bell_deration = 1.0;
+        visual_bell_duration = 0.5;
       };
     };
 
-    # mpv = {
-    #   enable = true;
-    # };
-
-    nh = {
+    obs-studio = {
       enable = true;
-      clean = {
-        enable = true;
-        dates = "weekly";
-        extraArgs = "--keep 7 --keep-since 14d";
-      };
-      flake = "/home/${username}/nix-config";
+      plugins = [pkgs.obs-studio-plugins.droidcam-obs];
     };
-
-    obs-studio.enable = true;
     starship.enable = true;
-    vscode.enable = true;
-    zsh = {
+    vscode = {
       enable = true;
-      autosuggestion.enable = true;
-      history = {
-        append = true;
-        extended = true;
-        save = 50000;
-        size = 50000;
-      };
-      historySubstringSearch.enable = true;
-      syntaxHighlighting.enable = true;
-      initExtraFirst = "bindkey -e";
-      shellAliases = {
-        ncf = "cd ~/nix-config && nvim -c \"lua require('persistence').load()\" && cd -";
-      };
+      package = pkgs-unstable.vscode;
     };
   };
 
@@ -113,5 +100,4 @@
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
-
 }

@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, username, ... }:
 
 # let
 #   # Create an overlay to access unstable packages
@@ -78,7 +78,6 @@
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
   services = {
     kanata = {
       enable = true;
@@ -86,54 +85,44 @@
         extraDefCfg = "process-unmapped-keys yes";
         config = ''
           (defsrc
-            f1             f3                 f4             f5         f6         f7
-            1       2          3       4       5       6       7       8       9       0       ScrollLock
+            esc f1             f3                 f4             f5         f6         f7
+            grv 1       2          3       4       5       6       7       8       9       0       ScrollLock
             tab     q          w       e
-                    a          s       d               h       j       k       l
+            caps    a          s       d               h       j       k       l
           )
           (deflayer default
-            MediaPlayPause MediaTrackPrevious MediaTrackNext VolumeMute VolumeDown VolumeUp
-            _       _          _       _       _       _       _       _       _       _       NumLock
+            grv MediaPlayPause MediaTrackPrevious MediaTrackNext VolumeMute VolumeDown VolumeUp
+            esc _       _          _       _       _       _       _       _       _       _       NumLock
             @tab    _          _       _
-                    _          _       _               _       _       _       _
+            lctl    _          _       _               _       _       _       _
           )
           (deflayer nav
-            f1             f3                 f4             f5         f6         f7
-            Numpad1 Numpad2    Numpad3 Numpad4 Numpad5 Numpad6 Numpad7 Numpad8 Numpad9 Numpad0 NumLock
+            grv f1             f3                 f4             f5         f6         f7
+            esc Numpad1 Numpad2    Numpad3 Numpad4 Numpad5 Numpad6 Numpad7 Numpad8 Numpad9 Numpad0 NumLock
             _       VolumeDown up      VolumeUp
-                    left       down    right           left down up  right
+            lctl    left       down    right           left down up  right
           )
           (defalias
             tab (tap-hold-press 200 200 tab (layer-while-held nav))
           )
         '';
       };
-      # keyboards."all".config = ''
-      #   (defsrc           esc grv tab  caps 8
-      #                                          h    j    k  l)
-      #   (deflayer default grv esc @tab lctl 8
-      #                                          _    _    _  _)
-      #   (deflayer multi     _   _   _    _    pp
-      #                                          left down up right)
-      #   (defalias tab (tap-hold 200 200 tab (layer-while-held multi)))
-      # '';
-      # keyboards."all".extraDefCfg = "process-unmapped-keys yes";
     };
 
     # Enable sound.
     # hardware.pulseaudio.enable = true;
     # OR
-    services.pipewire = {
+    pipewire = {
       enable = true;
       pulse.enable = true;
     };
+
+    # Enable CUPS to print documents.
+    # services.printing.enable = true;
+
+    # Enable touchpad support (enabled default in most desktopManager).
+    libinput.enable = true;
   };
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
 
   security = {
     pam.services.login.kwallet = {
@@ -159,47 +148,15 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    _64gram
-    btop
-    cargo
-    clang
-    cliphist
     dropbox
     eza
-    fd
-    floorp
-    git
-    gnumake
-    jq
-    kitty
-    lazygit
-    localsend
-    logseq
-    libreoffice-qt-fresh
-    mpv
-    neovim
-    nodePackages.npm
-    pciutils
-    python3
-    ripgrep
-    super-productivity
-    thunderbird
-    tldr
-    tlwg
-    unzip
     vscode
     wget
-    yazi
-    yt-dlp
-  ];
-
-  # Temporary fix for logseq
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-27.3.11"
+    wl-clipboard
   ];
 
   fonts.packages = with pkgs; [
-    nerdfonts
+    (pkgs.nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -212,6 +169,12 @@
   programs = {
     nh = {
       enable = true;
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep 7 --keep-since 14d";
+      };
+      flake = "/home/${username}/nix-config";
     };
     zsh = {
       enable = true;
@@ -221,8 +184,6 @@
         nix = "noglob nix";
       };
     };
-    starship.enable = true;
-    fzf.keybindings = true;
   };
 
   # List services that you want to enable:

@@ -3,51 +3,159 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Home manager
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    # For macOS
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix.url = "github:danth/stylix/release-24.11";
-    # nur = {
-    #   url = "github:nix-community/NUR";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    # Home manager
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+    nhpkg.url = "github:viperML/nh";
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    stylix = {
+      url = "github:danth/stylix/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
-  outputs =
-  { nixpkgs, home-manager, stylix, ... } @ inputs:
-  let
-    system = "aarch64-linux";
-    host = "phoenix";
+  outputs = {
+    nixpkgs,
+    nixpkgs-stable,
+    nix-darwin,
+    home-manager,
+    home-manager-stable,
+    nhpkg,
+    nvf,
+    stylix,
+    ...
+  } @ inputs: let
     username = "yim";
   in {
     nixosConfigurations = {
-      "${host}" = nixpkgs.lib.nixosSystem {
+      phoenix = nixpkgs-stable.lib.nixosSystem {
         specialArgs = {
-          inherit inputs;
-          inherit system;
-          inherit username;
-          inherit host;
+          inherit inputs username;
         };
         modules = [
-          ./hosts/${host}/configuration.nix
+          ./hosts/phoenix/configuration.nix
           stylix.nixosModules.stylix
-          home-manager.nixosModules.home-manager
+          home-manager-stable.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit username;
-              inherit host;
+            home-manager = {
+              extraSpecialArgs = {
+                inherit inputs username;
+                # pkgs-unstable = nixpkgs.legacyPackages.x86_64-linux;
+                pkgs-unstable = import nixpkgs {
+                  system = "x86_64-linux";
+                  config.allowUnfree = true;
+                };
+              };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${username}.imports = [
+                nvf.homeManagerModules.default
+                ./hosts/phoenix/home.nix
+              ];
             };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.${username} = import ./hosts/${host}/home.nix;
           }
         ];
+      };
+
+      eagle = nixpkgs-stable.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs username;
+        };
+        modules = [
+          ./hosts/eagle/configuration.nix
+          home-manager-stable.nixosModules.home-manager
+          {
+            home-manager = {
+              extraSpecialArgs = {
+                inherit inputs username;
+              };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${username} = import ./hosts/eagle/home.nix;
+            };
+          }
+        ];
+      };
+
+      falcon = nixpkgs-stable.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs username;
+        };
+        modules = [
+          ./hosts/falcon/configuration.nix
+          home-manager-stable.nixosModules.home-manager
+          {
+            home-manager = {
+              extraSpecialArgs = {
+                inherit inputs username;
+              };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${username} . imports = [
+                nvf.homeManagerModules.default
+                ./hosts/falcon/home.nix
+              ];
+            };
+          }
+        ];
+      };
+    };
+
+    darwinConfigurations = {
+      griffin = nix-darwin.lib.darwinSystem {
+        specialArgs = {
+          inherit username;
+          inherit (nhpkg.packages.aarch64-darwin) nh;
+        };
+        modules = [
+          ./hosts/griffin/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            users.users.${username}.home = nixpkgs.lib.mkDefault /Users/${username};
+            home-manager = {
+              extraSpecialArgs = {
+                inherit inputs username;
+                inherit (nhpkg.packages.aarch64-darwin) nh;
+                pkgs-stable = nixpkgs-stable.legacyPackages.aarch64-darwin;
+              };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${username}.imports = [
+                nvf.homeManagerModules.default
+                ./hosts/griffin/home.nix
+              ];
+            };
+          }
+        ];
+      };
+    };
+
+    homeConfigurations = {
+      # Standalone HM
+      # Office Server
+      "yim@dell" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [nvf.homeManagerModules.default ./hosts/dell/home.nix];
+        extraSpecialArgs = {
+          inherit inputs username;
+          inherit (nhpkg.packages.x86_64-linux) nh;
+        };
       };
     };
   };

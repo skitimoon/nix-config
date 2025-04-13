@@ -19,8 +19,10 @@
         "super-productivity"
         "swaync"
         "swww-daemon && swww img ~/nix-config/config/wallpapers/benjamin-voros-phIFdC6lA4E-unsplash.jpg"
+        "kdeconnect-indicator"
         "thunderbird"
         "waybar"
+        "ayugram-desktop"
       ];
 
       dwindle = {
@@ -96,6 +98,11 @@
         "$mod, K, movefocus, u"
         "$mod, L, movefocus, r"
 
+        "$mod SHIFT, H, movewindow, l"
+        "$mod SHIFT, J, movewindow, d"
+        "$mod SHIFT, K, movewindow, u"
+        "$mod SHIFT, L, movewindow, r"
+
         "$mod, 1, focusworkspaceoncurrentmonitor, 1"
         "$mod, 2, focusworkspaceoncurrentmonitor, 2"
         "$mod, 3, focusworkspaceoncurrentmonitor, 3"
@@ -152,6 +159,7 @@
 
       windowrulev2 = [
         "workspace 2, class:floorp"
+        "workspace 5, class:com.ayugram.desktop"
         "workspace 6, class:thunderbird"
         "workspace 7, class:Logseq"
         "workspace 10, class:superProductivity"

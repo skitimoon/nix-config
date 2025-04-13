@@ -5,6 +5,7 @@
     userName = "skitimoon";
     ignores = [
       ".stfolder"
+      ".stignore"
       "Session.vim"
     ];
   };

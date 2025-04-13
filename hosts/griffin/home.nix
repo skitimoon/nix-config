@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ../../config/git.nix
     ../../config/mpv.nix
     ../../config/nvf.nix
     ../../config/yazi.nix
@@ -64,16 +65,8 @@
       enable = true;
       nix-direnv.enable = true;
     };
+
     fzf.enable = true;
-    git = {
-      enable = true;
-      userEmail = "s.kitimoon@gmail.com";
-      userName = "skitimoon";
-      ignores = [
-        ".stfolder"
-        ".stignore"
-      ];
-    };
 
     kitty = {
       enable = true;

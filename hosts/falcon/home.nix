@@ -6,7 +6,7 @@
   imports = [
     ../../config/git.nix
     ../../config/nvf.nix
-    ../../config/yazi
+    ../../config/yazi.nix
     ../../config/zsh.nix
   ];
 

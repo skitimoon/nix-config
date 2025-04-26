@@ -10,7 +10,6 @@
       size = 50000;
     };
     historySubstringSearch.enable = true;
-    initContent = ''export PATH="/opt/homebrew/bin:$PATH"'';
     plugins = [
       {
         name = pkgs.zsh-vi-mode.pname;

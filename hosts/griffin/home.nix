@@ -83,6 +83,9 @@
       enable = true;
     };
     vscode.enable = true;
+    zsh = {
+      initContent = ''export PATH="/opt/homebrew/bin:$PATH"'';
+    };
   };
 
   # home.file = {

@@ -186,7 +186,10 @@
           enableTreesitter = true;
           enableExtraDiagnostics = true;
           nix.enable = true;
-          python.enable = true;
+          python = {
+            enable = true;
+            format.type = "ruff";
+          };
         };
 
         visuals = {

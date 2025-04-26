@@ -36,6 +36,7 @@
     brave
     devenv
     eza
+    ice-bar
     jankyborders
     karabiner-elements
     lazygit
@@ -79,9 +80,7 @@
       };
     };
 
-    starship = {
-      enable = true;
-    };
+    starship.enable = true;
     vscode.enable = true;
     zsh = {
       initContent = ''export PATH="/opt/homebrew/bin:$PATH"'';

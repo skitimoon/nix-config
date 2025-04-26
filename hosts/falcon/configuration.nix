@@ -99,7 +99,6 @@
     nextcloud = {
       enable = true;
       hostName = "yim.my.to";
-      settings.trusted_domains = ["cloudd.thddns.net" "gymmy.duckdns.org" "yimmy.ddns.net" "yim.my.to"];
       config.adminpassFile = "/etc/nextcloud-admin-pass";
       https = true;
     };

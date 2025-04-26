@@ -5,12 +5,13 @@
 }: {
   imports = [
     # ../../config/hyprland.nix
-    ../../config/mpv
+    ../../config/mpv.nix
     ../../config/neovim.nix
     # ../../config/rofi.nix
     # ../../config/waybar.nix
     # ../../config/wlogout.nix
-    ../../config/yazi
+    ../../config/yazi.nix
+    ../../config/zsh.nix
   ];
 
   # Home Manager Setting
@@ -76,22 +77,6 @@
     obs-studio.enable = true;
     starship.enable = true;
     vscode.enable = true;
-    zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      history = {
-        append = true;
-        extended = true;
-        save = 50000;
-        size = 50000;
-      };
-      historySubstringSearch.enable = true;
-      syntaxHighlighting.enable = true;
-      initExtraFirst = "bindkey -e";
-      shellAliases = {
-        ncf = "cd ~/nix-config && nvim -c \"lua require('persistence').load()\" && cd -";
-      };
-    };
   };
 
   services = {

@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../../config/git.nix
+    ../../config/kitty.nix
     ../../config/mpv.nix
     ../../config/nvf.nix
     ../../config/yazi.nix
@@ -68,17 +69,6 @@
 
     fzf.enable = true;
 
-    kitty = {
-      enable = true;
-      font.name = "JetBrainsMono Nerd Font Mono";
-      settings = {
-        enable_audio_bell = false;
-        scrollback_lines = 50000;
-        visual_bell_duration = 0.5;
-        macos_option_as_alt = true;
-      };
-    };
-
     nh = {
       enable = true;
       package = nh;
@@ -95,8 +85,8 @@
     vscode.enable = true;
   };
 
-  home.file = {
-  };
+  # home.file = {
+  # };
 
   services = {
     syncthing = {

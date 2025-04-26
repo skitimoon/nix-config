@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../../config/hyprland.nix
+    ../../config/kitty.nix
     ../../config/mpv.nix
     ../../config/nvf.nix
     ../../config/rofi.nix
@@ -67,25 +68,18 @@
     };
     floorp.enable = true;
     fzf.enable = true;
+
     git = {
       enable = true;
       userEmail = "s.kitimoon@gmail.com";
       userName = "skitimoon";
-    };
-    kitty = {
-      enable = true;
-      font.name = "JetBrainsMono Nerd Font Mono";
-      settings = {
-        enable_audio_bell = false;
-        scrollback_lines = 50000;
-        visual_bell_duration = 0.5;
-      };
     };
 
     obs-studio = {
       enable = true;
       plugins = [pkgs.obs-studio-plugins.droidcam-obs];
     };
+
     starship.enable = true;
     vscode = {
       enable = true;

@@ -37,7 +37,6 @@
   ];
 
   programs = {
-    floorp.enable = true;
     fzf.enable = true;
     starship.enable = true;
   };

@@ -19,10 +19,7 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nvf.url = "github:notashelf/nvf";
     stylix = {
       url = "github:danth/stylix/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -105,7 +102,7 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username} . imports = [
+              users.${username}.imports = [
                 nvf.homeManagerModules.default
                 ./hosts/falcon/home.nix
               ];

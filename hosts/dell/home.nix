@@ -6,7 +6,7 @@
   imports = [
     ../../config/git.nix
     ../../config/nvf.nix
-    ../../config/yazi
+    ../../config/yazi.nix
     ../../config/zsh.nix
   ];
 
@@ -43,14 +43,6 @@
       nix-direnv.enable = true;
     };
     fzf.enable = true;
-    git = {
-      enable = true;
-      userEmail = "s.kitimoon@gmail.com";
-      userName = "skitimoon";
-      ignores = [
-        ".stfolder"
-      ];
-    };
 
     nh = {
       enable = true;

@@ -19,7 +19,6 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
-    nhpkg.url = "github:viperML/nh";
     nvf = {
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,7 +35,6 @@
     nix-darwin,
     home-manager,
     home-manager-stable,
-    nhpkg,
     nvf,
     stylix,
     ...
@@ -121,7 +119,6 @@
       griffin = nix-darwin.lib.darwinSystem {
         specialArgs = {
           inherit username;
-          inherit (nhpkg.packages.aarch64-darwin) nh;
         };
         modules = [
           ./hosts/griffin/configuration.nix
@@ -131,7 +128,6 @@
             home-manager = {
               extraSpecialArgs = {
                 inherit inputs username;
-                inherit (nhpkg.packages.aarch64-darwin) nh;
                 pkgs-stable = nixpkgs-stable.legacyPackages.aarch64-darwin;
               };
               useGlobalPkgs = true;
@@ -154,7 +150,6 @@
         modules = [nvf.homeManagerModules.default ./hosts/dell/home.nix];
         extraSpecialArgs = {
           inherit inputs username;
-          inherit (nhpkg.packages.x86_64-linux) nh;
         };
       };
     };

@@ -1,7 +1,6 @@
 {
   pkgs,
   username,
-  nh,
   ...
 }: {
   imports = [
@@ -72,7 +71,6 @@
 
     nh = {
       enable = true;
-      package = nh;
       flake = "/Users/${username}/nix-config";
       clean = {
         enable = true;

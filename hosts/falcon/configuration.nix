@@ -7,6 +7,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./docker-compose.nix
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
@@ -82,6 +83,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    podman-compose
     wget
   ];
 
@@ -103,9 +105,26 @@
       https = true;
     };
 
+    nginx = {
+      recommendedProxySettings = true;
+      recommendedTlsSettings = true;
+    };
+
     nginx.virtualHosts.${config.services.nextcloud.hostName} = {
       forceSSL = true;
       enableACME = true;
+    };
+
+    nginx.virtualHosts."yimmy.ddns.net" = {
+      forceSSL = true;
+      enableACME = true;
+      locations = {
+        "/" = {
+          # trailing slash on the proxy_pass url is essential:
+          proxyPass = "http://127.0.0.1:5000/";
+          proxyWebsockets = true;
+        };
+      };
     };
 
     openssh = {
@@ -118,6 +137,7 @@
     acceptTerms = true;
     certs = {
       ${config.services.nextcloud.hostName}.email = "s.kitimoon+letsencrypt@gmail.com";
+      "yimmy.ddns.net".email = "s.kitimoon+letsencrypt@gmail.com";
     };
   };
 

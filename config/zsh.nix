@@ -32,6 +32,7 @@
       ".." = "cd ..";
     };
     shellGlobalAliases = {
+      B = "| bat";
       H = "| head";
       T = "| tail";
       G = "| grep";

@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ../../config/git.nix
     ../../config/hyprland.nix
     ../../config/kitty.nix
     ../../config/mpv.nix
@@ -68,12 +69,6 @@
     };
     floorp.enable = true;
     fzf.enable = true;
-
-    git = {
-      enable = true;
-      userEmail = "s.kitimoon@gmail.com";
-      userName = "skitimoon";
-    };
 
     obs-studio = {
       enable = true;

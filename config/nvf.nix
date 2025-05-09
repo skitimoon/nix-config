@@ -175,6 +175,7 @@
         };
 
         lsp = {
+          enable = true;
           formatOnSave = true;
           lspSignature.enable = true;
           trouble.enable = true;
@@ -182,7 +183,6 @@
 
         languages = {
           enableFormat = true;
-          enableLSP = true;
           enableTreesitter = true;
           enableExtraDiagnostics = true;
           nix.enable = true;

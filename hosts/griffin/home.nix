@@ -67,8 +67,6 @@
       nix-direnv.enable = true;
     };
 
-    fzf.enable = true;
-
     nh = {
       enable = true;
       flake = "/Users/${username}/nix-config";

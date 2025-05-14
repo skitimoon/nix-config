@@ -5,11 +5,11 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "open-stage-control";
-  version = "1.29.2";
+  version = "1.29.3";
 
   src = fetchzip {
     url = "https://github.com/jean-emmanuel/open-stage-control/releases/download/v${version}/open-stage-control_${version}_osx-x64.zip";
-    sha256 = "sha256-VWv8lw+xnVSIYbzAEioN518lhTacF7GbQ7d2oTSJ0C4=";
+    sha256 = "sha256-kocwZMTercrmEjHlNsHe9ymtHKswdKVBLIgNnm/QYo8=";
   };
 
   installPhase = ''

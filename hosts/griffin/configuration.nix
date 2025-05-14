@@ -36,7 +36,6 @@
       "logseq"
       "midi-monitor"
       "nextcloud"
-      "nordvpn"
       "rustdesk"
       "sf-symbols"
       "steam"
@@ -48,11 +47,6 @@
     taps = [
       "houmain/tap"
       "nikitabobko/tap"
-      {
-        name = "popcorn-official/popcorn-desktop";
-        clone_target = "https://github.com/popcorn-official/popcorn-desktop.git";
-        force_auto_update = true;
-      }
     ];
 
     masApps = {

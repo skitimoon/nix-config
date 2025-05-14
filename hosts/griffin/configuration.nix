@@ -45,8 +45,7 @@
     ];
 
     taps = [
-      "houmain/tap"
-      "nikitabobko/tap"
+      "houmain/tap" # keymapper
     ];
 
     masApps = {

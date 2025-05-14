@@ -36,6 +36,7 @@
       "logseq"
       "midi-monitor"
       "nextcloud"
+      "openlp"
       "rustdesk"
       "sf-symbols"
       "steam"
@@ -50,6 +51,7 @@
 
     masApps = {
       line = 539883307;
+      bitwarden = 1352778147;
     };
 
     onActivation = {

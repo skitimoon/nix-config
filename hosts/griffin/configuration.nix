@@ -80,9 +80,12 @@
       finder = {
         _FXShowPosixPathInTitle = true;
         AppleShowAllExtensions = true;
-        AppleShowAllFiles = true;
         ShowPathbar = true;
         ShowStatusBar = true;
+      };
+      NSGlobalDomain = {
+        AppleShowAllFiles = true;
+        NSWindowShouldDragOnGesture = true;
       };
     };
   };

@@ -7,6 +7,7 @@
       ".stfolder"
       ".stignore"
       "Session.vim"
+      "scratchpad.*"
     ];
   };
 }

@@ -177,7 +177,6 @@
         lsp = {
           enable = true;
           formatOnSave = true;
-          lspSignature.enable = true;
           trouble.enable = true;
         };
 
@@ -206,15 +205,31 @@
         };
 
         autopairs.nvim-autopairs.enable = true;
-        autocomplete.nvim-cmp.enable = true;
+        autocomplete.blink-cmp = {
+          enable = true;
+          friendly-snippets.enable = true;
+          setupOpts = {
+            cmdline.keymap.preset = "default";
+            signature.enabled = true;
+          };
+        };
         treesitter = {
           enable = true;
           context.enable = true;
         };
 
-        # binds = {
-        #   cheatsheet.enable = true;
-        # };
+        binds = {
+          hardtime-nvim = {
+            enable = true;
+            setupOpts = {
+              disabled_keys = {
+                "<Up>" = false;
+                "<Down>" = false;
+              };
+              disabled_mouse = false;
+            };
+          };
+        };
 
         git = {
           enable = true;
@@ -226,6 +241,7 @@
             enable = true;
             setupOpts = {
               highlight.timer = 150;
+              ring.storage = "memory";
             };
           };
         };
@@ -381,11 +397,10 @@
         ui = {
           noice.enable = true;
           illuminate.enable = true;
-          # modes-nvim.enable = true;
         };
 
         assistant.copilot = {
-          enable = false;
+          enable = true;
           cmp.enable = true;
         };
       };

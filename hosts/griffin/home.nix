@@ -25,16 +25,20 @@
     # You should not change this value, even if you update Home Manager. If you do
     # want to update the value, then make sure to first check the Home Manager
     # release notes.
-    stateVersion = "24.11"; # Please read the comment before changing.
+    stateVersion = "25.11"; # Please read the comment before changing.
   };
 
   home.packages = with pkgs; [
     aldente
     aerospace
+    ayugram-desktop
     bat
     brave
+    google-chrome
     devenv
     eza
+    floorp
+    ghostty-bin
     ice-bar
     jankyborders
     karabiner-elements
@@ -43,6 +47,7 @@
     moonlight-qt
     raycast
     ripgrep
+    rquickshare
     sketchybar
     sketchybar-app-font
     tldr
@@ -57,7 +62,6 @@
     # '')
 
     (callPackage ../../config/kdeconnect.nix {})
-    (callPackage ../../config/popcorntime.nix {})
     (callPackage ../../config/osc.nix {})
   ];
 
@@ -76,15 +80,44 @@
       };
     };
 
+    nvf.settings.vim.languages.dart = {
+      enable = true;
+      flutter-tools = {
+        enable = true;
+      };
+    };
+
     starship.enable = true;
     vscode.enable = true;
     zsh = {
-      initContent = ''export PATH="/opt/homebrew/bin:$PATH"'';
+      initContent = ''
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      '';
     };
   };
 
   # home.file = {
   # };
+
+  targets.darwin = {
+    defaults = {
+      NSGlobalDomain = {
+        AppleShowAllExtensions = true;
+      };
+      "com.apple.dock".autohide = true;
+      "com.apple.finder" = {
+        AppleShowAllFiles = true;
+        ShowPathBar = true;
+        ShowStatusBar = true;
+      };
+    };
+    keybindings = {
+      "~d" = "deleteWordForward:";
+      "~f" = "moveWordForward:";
+      "^u" = "deleteToBeginningOfLine:";
+      # "^w" = "deleteWordBackward:";
+    };
+  };
 
   services = {
     syncthing = {

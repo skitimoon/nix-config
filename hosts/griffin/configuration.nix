@@ -17,6 +17,8 @@
   homebrew = {
     enable = true;
     brews = [
+      "cocoapods"
+      "gemini-cli"
       {
         name = "keymapper";
         args = ["HEAD"];
@@ -24,25 +26,22 @@
     ];
 
     casks = [
-      "ayugram"
+      "android-studio"
       "betterzip"
-      "cursor"
-      "floorp"
+      "droidcam-obs"
+      "flutter"
       "font-sf-pro"
-      "freeshow"
-      "fx-cast-bridge"
       "hammerspoon"
       "karabiner-elements"
-      "logseq"
+      "kiro"
+      "middleclick"
       "midi-monitor"
       "nextcloud"
-      "openlp"
-      "rustdesk"
+      "obs"
       "sf-symbols"
       "steam"
-      "super-productivity"
       "trae"
-      "zen-browser"
+      "zen"
     ];
 
     taps = [
@@ -52,6 +51,7 @@
     masApps = {
       line = 539883307;
       bitwarden = 1352778147;
+      xcode = 497799835;
     };
 
     onActivation = {
@@ -66,6 +66,7 @@
     pkgs.nerd-fonts.hack
   ];
 
+  nix.enable = false;
   nix.settings = {
     experimental-features = "nix-command flakes";
     extra-trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="];
@@ -75,16 +76,10 @@
   # Set Git commit hash for darwin-version.
   # system.configurationRevision = self.rev or self.dirtyRev or null;
   system = {
+    primaryUser = "yim";
     defaults = {
       dock.show-recents = false;
-      finder = {
-        _FXShowPosixPathInTitle = true;
-        AppleShowAllExtensions = true;
-        ShowPathbar = true;
-        ShowStatusBar = true;
-      };
       NSGlobalDomain = {
-        AppleShowAllFiles = true;
         NSWindowShouldDragOnGesture = true;
       };
     };

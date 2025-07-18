@@ -7,7 +7,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./docker-compose.nix
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
@@ -83,7 +82,6 @@
 
   environment.systemPackages = with pkgs; [
     git
-    podman-compose
     wget
   ];
 
@@ -98,10 +96,16 @@
   # List services that you want to enable:
   environment.etc."nextcloud-admin-pass".text = "qwertyuiop[]\\01";
   services = {
+    n8n = {
+      enable = true;
+      webhookUrl = "https://pairco.my.to/";
+    };
     nextcloud = {
       enable = true;
+      package = pkgs.nextcloud30;
       hostName = "yim.my.to";
       config.adminpassFile = "/etc/nextcloud-admin-pass";
+      config.dbtype = "mysql";
       https = true;
     };
 
@@ -115,13 +119,12 @@
       enableACME = true;
     };
 
-    nginx.virtualHosts."yimmy.ddns.net" = {
+    nginx.virtualHosts."pairco.my.to" = {
       forceSSL = true;
       enableACME = true;
       locations = {
         "/" = {
-          # trailing slash on the proxy_pass url is essential:
-          proxyPass = "http://127.0.0.1:5000/";
+          proxyPass = "http://127.0.0.1:5678/";
           proxyWebsockets = true;
         };
       };
@@ -137,7 +140,7 @@
     acceptTerms = true;
     certs = {
       ${config.services.nextcloud.hostName}.email = "s.kitimoon+letsencrypt@gmail.com";
-      "yimmy.ddns.net".email = "s.kitimoon+letsencrypt@gmail.com";
+      "pairco.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
     };
   };
 
@@ -169,5 +172,5 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }

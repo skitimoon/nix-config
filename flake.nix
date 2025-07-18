@@ -4,10 +4,10 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     # For macOS
     nix-darwin = {
-      url = "github:LnL7/nix-darwin";
+      url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Home manager
@@ -16,13 +16,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-stable = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     nvf.url = "github:notashelf/nvf";
     stylix = {
-      url = "github:danth/stylix/release-24.11";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -39,23 +39,18 @@
     username = "yim";
   in {
     nixosConfigurations = {
-      phoenix = nixpkgs-stable.lib.nixosSystem {
+      phoenix = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs username;
         };
         modules = [
           ./hosts/phoenix/configuration.nix
           stylix.nixosModules.stylix
-          home-manager-stable.nixosModules.home-manager
+          home-manager.nixosModules.home-manager
           {
             home-manager = {
               extraSpecialArgs = {
                 inherit inputs username;
-                # pkgs-unstable = nixpkgs.legacyPackages.x86_64-linux;
-                pkgs-unstable = import nixpkgs {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
-                };
               };
               useGlobalPkgs = true;
               useUserPackages = true;
@@ -125,7 +120,6 @@
             home-manager = {
               extraSpecialArgs = {
                 inherit inputs username;
-                pkgs-stable = nixpkgs-stable.legacyPackages.aarch64-darwin;
               };
               useGlobalPkgs = true;
               useUserPackages = true;

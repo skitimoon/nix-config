@@ -4,12 +4,8 @@
   ...
 }: {
   imports = [
-    # ../../config/hyprland.nix
     ../../config/mpv.nix
     ../../config/neovim.nix
-    # ../../config/rofi.nix
-    # ../../config/waybar.nix
-    # ../../config/wlogout.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
   ];
@@ -29,13 +25,6 @@
       createDirectories = true;
     };
   };
-
-  # stylix.targets = {
-  #   hyprland.enable = false;
-  #   kde.enable = false;
-  #   vscode.enable = false;
-  #   waybar.enable = false;
-  # };
 
   home.packages = with pkgs; [
     bat
@@ -81,7 +70,6 @@
 
   services = {
     cliphist.enable = true;
-    # playerctld.enable = true;
     swaync.enable = true;
     syncthing.enable = true;
   };

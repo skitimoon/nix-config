@@ -102,7 +102,7 @@
     };
     nextcloud = {
       enable = true;
-      package = pkgs.nextcloud30;
+      package = pkgs.nextcloud31;
       hostName = "yim.my.to";
       config.adminpassFile = "/etc/nextcloud-admin-pass";
       config.dbtype = "mysql";
@@ -130,10 +130,7 @@
       };
     };
 
-    openssh = {
-      enable = true;
-      ports = [778];
-    };
+    openssh.enable = true;
   };
 
   security.acme = {

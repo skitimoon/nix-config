@@ -5,13 +5,9 @@
 }: {
   imports = [
     ../../config/git.nix
-    ../../config/hyprland.nix
     ../../config/kitty.nix
     ../../config/mpv.nix
     ../../config/nvf.nix
-    ../../config/rofi.nix
-    ../../config/waybar.nix
-    ../../config/wlogout.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
   ];
@@ -30,13 +26,6 @@
       enable = true;
       createDirectories = true;
     };
-  };
-
-  stylix.targets = {
-    hyprland.enable = false;
-    kde.enable = false;
-    vscode.enable = false;
-    waybar.enable = false;
   };
 
   home.packages = with pkgs; [
@@ -76,11 +65,6 @@
     vscode = {
       enable = true;
     };
-  };
-
-  services = {
-    cliphist.enable = true;
-    swaync.enable = true;
   };
 
   # Nicely reload system units when changing configs

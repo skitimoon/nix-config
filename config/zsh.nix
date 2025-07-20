@@ -8,7 +8,7 @@
     zsh = {
       enable = true;
       autosuggestion.enable = true;
-      # defaultKeymap = "emacs";
+      defaultKeymap = "emacs";
       history = {
         append = true;
         extended = true;
@@ -16,14 +16,13 @@
         size = 50000;
       };
       historySubstringSearch.enable = true;
-      # temporary fix for fzf not evaluate
-      initContent = ''eval "$(${lib.getExe config.programs.fzf.package} --zsh)"'';
-      plugins = [
-        {
-          name = pkgs.zsh-vi-mode.pname;
-          inherit (pkgs.zsh-vi-mode) src;
-        }
-      ];
+      # initContent = "source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+      # plugins = [
+      #   {
+      #     name = pkgs.zsh-vi-mode.pname;
+      #     inherit (pkgs.zsh-vi-mode) src;
+      #   }
+      # ];
       sessionVariables = {
         LESS = "Fij.5JW";
         WORDCHARS = "\${WORDCHARS/\\/}";

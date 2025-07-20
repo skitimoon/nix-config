@@ -74,7 +74,7 @@
       clean = {
         enable = true;
         dates = "weekly";
-        extraArgs = "--keep 7 --keep-since 14d";
+        extraArgs = "--keep 14 --keep-since 30d";
       };
       flake = "/home/${username}/nix-config";
     };
@@ -138,15 +138,9 @@
     wl-clipboard
   ];
 
-  # For Logseq
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-27.3.11"
-  ];
-
   fonts.packages = [
-    (pkgs.nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
-    # pkgs.nerd-fonts.fira-code
-    # pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.jetbrains-mono
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -229,5 +223,5 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }

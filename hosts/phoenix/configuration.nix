@@ -67,7 +67,6 @@
   };
 
   programs = {
-    hyprland.enable = true;
     kdeconnect.enable = true;
     nh = {
       enable = true;
@@ -151,39 +150,7 @@
   #   enableSSHSupport = true;
   # };
 
-  stylix = {
-    enable = true;
-    # autoEnable = false;
-    cursor = {
-      package = pkgs.nordzy-cursor-theme; # pkgs.bibata-cursors;
-      name = "Nordzy-cursors";
-      size = 24;
-    };
-    image = ../../config/wallpapers/benjamin-voros-phIFdC6lA4E-unsplash.jpg;
-    polarity = "dark";
-    opacity.terminal = 0.8;
-    fonts = {
-      monospace = {
-        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
-        # package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
-      };
-      sansSerif = {
-        package = pkgs.montserrat;
-        name = "Montserrat";
-      };
-      serif = {
-        package = pkgs.montserrat;
-        name = "Montserrat";
-      };
-      sizes = {
-        applications = 10;
-        terminal = 10;
-        desktop = 10;
-        #   popups = 12;
-      };
-    };
-  };
+
 
   # List services that you want to enable:
   services.syncthing = {

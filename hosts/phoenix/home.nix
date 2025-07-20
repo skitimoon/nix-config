@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-unstable,
   username,
   ...
 }: {
@@ -41,25 +40,23 @@
   };
 
   home.packages = with pkgs; [
-    pkgs-unstable.ayugram-desktop
+    ayugram-desktop
     bat
     brave
-    code-cursor
-    pkgs-unstable.devenv
+    devenv
     eza
     fd
     jq
     lazygit
     localsend
     logseq
-    qtscrcpy
     ripgrep
-    pkgs-unstable.super-productivity
-    swww
+    super-productivity
+    # swww
     thunderbird
     tldr
     tlwg
-    vesktop
+    tridactyl-native
   ];
 
   programs = {
@@ -78,7 +75,6 @@
     starship.enable = true;
     vscode = {
       enable = true;
-      package = pkgs-unstable.vscode;
     };
   };
 

@@ -1,9 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, username, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  username,
+  ...
+}:
 # let
 #   # Create an overlay to access unstable packages
 #   unstable = import (fetchTarball "channel:nixos-unstable") {
@@ -11,15 +15,15 @@
 #   };
 # in
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      # <nixos-hardware/apple/macbook-pro/10-1>
-      # <nixos-hardware/common/gpu/nvidia/disable>
-      ./macbook-pro.nix
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    # <nixos-hardware/apple/macbook-pro/10-1>
+    # <nixos-hardware/common/gpu/nvidia/disable>
+    ./macbook-pro.nix
+    ./hardware-configuration.nix
+  ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -33,7 +37,7 @@
   networking.hostName = "eagle"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
@@ -62,7 +66,6 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-
   # Enable the Plasma Desktop Environment.
   services.desktopManager.plasma6.enable = true;
   services.displayManager = {
@@ -74,7 +77,6 @@
     };
   };
   programs.kdeconnect.enable = true;
-  
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -136,7 +138,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.yim = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
     # packages = with pkgs; [
     #   firefox
     #   tree
@@ -156,7 +158,8 @@
   ];
 
   fonts.packages = with pkgs; [
-    (pkgs.nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.hack
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -190,7 +193,7 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-  
+
   services.syncthing = {
     enable = true;
     user = "yim";
@@ -226,6 +229,4 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }
-

@@ -61,9 +61,9 @@
     };
   };
 
-  fonts.packages = [
-    pkgs.nerd-fonts.jetbrains-mono
-    pkgs.nerd-fonts.hack
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.hack
   ];
 
   nix.enable = false;

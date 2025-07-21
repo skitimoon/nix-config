@@ -20,10 +20,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     nvf.url = "github:notashelf/nvf";
-    stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -33,7 +29,6 @@
     home-manager,
     home-manager-stable,
     nvf,
-    stylix,
     ...
   } @ inputs: let
     username = "yim";
@@ -45,7 +40,6 @@
         };
         modules = [
           ./hosts/phoenix/configuration.nix
-          stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
             home-manager = {

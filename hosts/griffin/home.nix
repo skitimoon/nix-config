@@ -44,14 +44,17 @@
     karabiner-elements
     lazygit
     localsend
+    logseq
     moonlight-qt
     raycast
     ripgrep
     rquickshare
     sketchybar
     sketchybar-app-font
+    super-productivity
     tldr
     unnaturalscrollwheels
+    vesktop
     vscode
 
     # # You can also create simple shell scripts directly inside your

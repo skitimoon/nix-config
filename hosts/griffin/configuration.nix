@@ -23,6 +23,7 @@
         name = "keymapper";
         args = ["HEAD"];
       }
+      "git-lfs"
     ];
 
     casks = [

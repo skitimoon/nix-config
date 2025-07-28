@@ -41,7 +41,6 @@
     logseq
     ripgrep
     super-productivity
-    # swww
     thunderbird
     tldr
     tlwg

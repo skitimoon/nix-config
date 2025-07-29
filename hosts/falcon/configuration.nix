@@ -90,7 +90,6 @@
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  # programs.mtr.enable = true;
 
   # List services that you want to enable:
   environment.etc."nextcloud-admin-pass".text = "qwertyuiop[]\\01";
@@ -99,12 +98,16 @@
       enable = true;
       webhookUrl = "https://pairco.my.to/";
     };
+
     nextcloud = {
       enable = true;
       package = pkgs.nextcloud31;
+      database.createLocally = true;
       hostName = "yim.my.to";
-      config.adminpassFile = "/etc/nextcloud-admin-pass";
-      config.dbtype = "mysql";
+      config = {
+        adminpassFile = "/etc/nextcloud-admin-pass";
+        dbtype = "pgsql";
+      };
       https = true;
     };
 

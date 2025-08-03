@@ -29,7 +29,6 @@
     casks = [
       "android-studio"
       "betterzip"
-      "discord"
       "droidcam-obs"
       "flutter"
       "font-sf-pro"

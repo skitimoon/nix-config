@@ -36,12 +36,12 @@
     brave
     google-chrome
     devenv
+    discord
     eza
     floorp
     ghostty-bin
     ice-bar
     jankyborders
-    karabiner-elements
     lazygit
     localsend
     logseq

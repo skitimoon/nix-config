@@ -42,7 +42,6 @@
     ghostty-bin
     ice-bar
     jankyborders
-    lazygit
     localsend
     logseq
     moonlight-qt
@@ -72,6 +71,21 @@
     direnv = {
       enable = true;
       nix-direnv.enable = true;
+    };
+
+    lazygit = {
+      enable = true;
+      settings = {
+        customCommands = [
+          {
+            key = "<c-a>";
+            description = "Pick AI Commit";
+            command = "aicommit2";
+            context = "files";
+            output = "terminal";
+          }
+        ];
+      };
     };
 
     nh = {

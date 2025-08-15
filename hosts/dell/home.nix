@@ -30,8 +30,6 @@
     bat
     devenv
     eza
-    fd
-    jq
     lazygit
     ripgrep
     tldr

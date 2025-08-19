@@ -45,6 +45,7 @@
     localsend
     logseq
     moonlight-qt
+    ollama
     raycast
     ripgrep
     rquickshare

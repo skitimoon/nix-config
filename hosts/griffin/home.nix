@@ -65,7 +65,7 @@
     # '')
 
     (callPackage ../../config/kdeconnect.nix {})
-    (callPackage ../../config/osc.nix {})
+    # (callPackage ../../config/osc.nix {})
   ];
 
   programs = {

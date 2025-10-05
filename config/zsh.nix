@@ -25,7 +25,7 @@
       # ];
       sessionVariables = {
         LESS = "Fij.5JW";
-        WORDCHARS = "\${WORDCHARS/\\/}";
+        WORDCHARS = "\${WORDCHARS//[\\/#]}";
       };
       syntaxHighlighting.enable = true;
       shellAliases = {

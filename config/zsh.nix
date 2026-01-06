@@ -1,9 +1,10 @@
 {
-  lib,
-  pkgs,
-  config,
+  # lib,
+  # pkgs,
+  # config,
   ...
-}: {
+}:
+{
   programs = {
     zsh = {
       enable = true;
@@ -16,13 +17,12 @@
         size = 50000;
       };
       historySubstringSearch.enable = true;
-      # initContent = "source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
-      # plugins = [
-      #   {
-      #     name = pkgs.zsh-vi-mode.pname;
-      #     inherit (pkgs.zsh-vi-mode) src;
-      #   }
-      # ];
+      initContent = ''
+        # Edit command line in $EDITOR with Ctrl+X Ctrl+E
+        autoload -Uz edit-command-line
+        zle -N edit-command-line
+        bindkey '^X^E' edit-command-line
+      '';
       sessionVariables = {
         LESS = "Fij.5JW";
         WORDCHARS = "\${WORDCHARS//[\\/#]}";
@@ -34,7 +34,7 @@
         la = "eza -laF";
         ll = "eza -l";
         cp = "cp -i";
-        rm = "rm -I ";
+        rm = "rm -I";
         mv = "mv -i";
         ".." = "cd ..";
       };

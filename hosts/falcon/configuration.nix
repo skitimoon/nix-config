@@ -1,9 +1,17 @@
 {
   pkgs,
+  inputs,
   username,
   config,
   ...
-}: {
+}:
+let
+  pkgsUnstable = import inputs.nixpkgs {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfree = true;
+  };
+in
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -59,7 +67,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."${username}" = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
   };
 
@@ -96,7 +104,7 @@
   services = {
     n8n = {
       enable = true;
-      webhookUrl = "https://pairco.my.to/";
+      environment.WEBHOOK_URL = "https://nnn.my.to/";
     };
 
     nextcloud = {
@@ -121,7 +129,7 @@
       enableACME = true;
     };
 
-    nginx.virtualHosts."pairco.my.to" = {
+    nginx.virtualHosts."nnn.my.to" = {
       forceSSL = true;
       enableACME = true;
       locations = {
@@ -139,12 +147,15 @@
     acceptTerms = true;
     certs = {
       ${config.services.nextcloud.hostName}.email = "s.kitimoon+letsencrypt@gmail.com";
-      "pairco.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
+      "nnn.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
     };
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [80 443];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

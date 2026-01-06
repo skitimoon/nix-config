@@ -20,6 +20,12 @@
           run = "cd /tmp";
           desc = "Cd to /tmp";
         }
+        {
+          on = "!";
+          for = "unix";
+          run = ''shell "$SHELL" --block'';
+          desc = "Open $SHELL here";
+        }
       ];
     };
   };

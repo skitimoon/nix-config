@@ -4,7 +4,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     # For macOS
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
@@ -16,10 +16,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-stable = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     nvf.url = "github:notashelf/nvf";
+    # aicommit2.url = "github:tak-bro/aicommit2";
   };
 
   outputs = {
@@ -104,7 +105,7 @@
     darwinConfigurations = {
       griffin = nix-darwin.lib.darwinSystem {
         specialArgs = {
-          inherit username;
+          inherit inputs username;
         };
         modules = [
           ./hosts/griffin/configuration.nix

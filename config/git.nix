@@ -2,8 +2,13 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
-    userEmail = "s.kitimoon@gmail.com";
-    userName = "skitimoon";
+    settings = {
+      fetch.prune = true;
+      user = {
+        email = "s.kitimoon@gmail.com";
+        name = "skitimoon";
+      };
+    };
     ignores = [
       ".kiro/"
       ".stfolder"

@@ -2,7 +2,8 @@
   pkgs,
   username,
   ...
-}: {
+}:
+{
   imports = [
     ../../config/git.nix
     ../../config/kitty.nix
@@ -16,7 +17,6 @@
   # manage.
   home = {
     inherit username;
-    # homeDirectory = /Users/${username};
 
     # This value determines the Home Manager release that your configuration is
     # compatible with. This helps avoid breakage when a new Home Manager release
@@ -34,60 +34,44 @@
     ayugram-desktop
     bat
     brave
-    google-chrome
     devenv
-    discord
+    (discord.override { withVencord = true; })
     eza
-    floorp
+    # floorp-bin
+    google-chrome
     ghostty-bin
-    ice-bar
+    # ice-bar
     jankyborders
+    # kiro # error when unpack
     localsend
     logseq
-    moonlight-qt
-    ollama
+    nixfmt
     raycast
     ripgrep
-    rquickshare
     sketchybar
     sketchybar-app-font
     super-productivity
     tldr
     unnaturalscrollwheels
+    uv
     vesktop
     vscode
+    warp-terminal
+    windsurf
+    zed-editor
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-
-    (callPackage ../../config/kdeconnect.nix {})
+    (callPackage ../../config/kdeconnect.nix { })
     # (callPackage ../../config/osc.nix {})
   ];
 
   programs = {
+    codex.enable = true;
     direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
-
-    lazygit = {
-      enable = true;
-      settings = {
-        customCommands = [
-          {
-            key = "<c-a>";
-            description = "Pick AI Commit";
-            command = "aicommit2";
-            context = "files";
-            output = "terminal";
-          }
-        ];
-      };
-    };
+    kitty.package = pkgs.runCommand "kitty-0.0.0" { } "mkdir $out";
+    lazygit.enable = true;
 
     nh = {
       enable = true;
@@ -105,10 +89,32 @@
       };
     };
 
+    # opencode = {
+    #   enable = true;
+    #   settings = {
+    #     provider = {
+    #       chatmock = {
+    #         npm = "@ai-sdk/openai-compatible";
+    #         name = "ChatMock";
+    #         options = {
+    #           baseURL = "http://127.0.0.1:8000/v1";
+    #         };
+    #         models = {
+    #           "gpt-5" = {
+    #             name = "GPT-5";
+    #           };
+    #           "gpt-5-codex" = {
+    #             name = "GPT-5-Codex";
+    #           };
+    #         };
+    #       };
+    #     };
+    #   };
+    # };
+
     starship.enable = true;
-    vscode.enable = true;
     zsh = {
-      initContent = ''
+      initContent = lib.mkAfter ''
         eval "$(/opt/homebrew/bin/brew shellenv)"
       '';
     };
@@ -130,10 +136,15 @@
       };
     };
     keybindings = {
+      "~a" = "moveToBeginningOfDocument";
       "~d" = "deleteWordForward:";
+      "~h" = "deleteWordBackward:";
       "~f" = "moveWordForward:";
+      "~b" = "moveWordBackward:";
       "^u" = "deleteToBeginningOfLine:";
-      # "^w" = "deleteWordBackward:";
+      "^k" = "deleteToEndOfLine:";
+      "~<" = "moveToBeginningOfDocument:";
+      "~>" = "moveToEndOfDocument:";
     };
   };
 

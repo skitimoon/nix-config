@@ -150,8 +150,6 @@
   #   enableSSHSupport = true;
   # };
 
-
-
   # List services that you want to enable:
   services.syncthing = {
     enable = true;

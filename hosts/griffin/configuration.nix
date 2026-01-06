@@ -1,9 +1,12 @@
 {pkgs, ...}: {
   security.pam.services.sudo_local.touchIdAuth = true;
-  nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = [
-  ];
+  # environment.systemPackages = [
+  # ];
+
+  nixpkgs = {
+    config.allowUnfree = true;
+  };
 
   programs = {
     zsh = {
@@ -27,20 +30,23 @@
 
     casks = [
       "android-studio"
+      "antigravity"
       "betterzip"
       "droidcam-obs"
+      "floorp"
       "flutter"
       "font-sf-pro"
       "hammerspoon"
       "karabiner-elements"
       "kiro"
+      "kitty"
       "middleclick"
-      "midi-monitor"
       "nextcloud"
       "obs"
       "sf-symbols"
       "steam"
       "trae"
+      "wacom-tablet"
       "zen"
     ];
 
@@ -49,9 +55,10 @@
     ];
 
     masApps = {
-      line = 539883307;
       bitwarden = 1352778147;
-      xcode = 497799835;
+      line = 539883307;
+      sundaykeys = 1615360535;
+      # xcode = 497799835;
     };
 
     onActivation = {
@@ -66,12 +73,11 @@
     nerd-fonts.hack
   ];
 
+  # Use Determinate Nix instead
   nix.enable = false;
-  nix.settings = {
-    experimental-features = "nix-command flakes";
-    extra-trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="];
-    extra-substituters = "https://devenv.cachix.org";
-  };
+  # nix.settings = {
+  #   experimental-features = "nix-command flakes";
+  # };
 
   # Set Git commit hash for darwin-version.
   # system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -87,7 +93,7 @@
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
-  system.stateVersion = 5;
+  system.stateVersion = 6;
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";

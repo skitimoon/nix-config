@@ -187,7 +187,7 @@
           nix.enable = true;
           python = {
             enable = true;
-            format.type = "ruff";
+            format.type = ["ruff"];
           };
         };
 

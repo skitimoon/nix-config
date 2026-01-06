@@ -16,7 +16,7 @@
   home = {
     inherit username;
     homeDirectory = "/home/${username}";
-    stateVersion = "24.11";
+    stateVersion = "25.11";
   };
 
   programs.home-manager.enable = true;
@@ -55,10 +55,10 @@
     floorp.enable = true;
     fzf.enable = true;
 
-    obs-studio = {
-      enable = true;
-      plugins = [pkgs.obs-studio-plugins.droidcam-obs];
-    };
+    # obs-studio = {
+    #   enable = true;
+    #   plugins = [pkgs.obs-studio-plugins.droidcam-obs];
+    # };
 
     starship.enable = true;
     vscode = {

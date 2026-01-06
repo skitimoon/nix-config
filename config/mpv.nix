@@ -1,9 +1,10 @@
-{
+{pkgs, ...}: {
   programs.mpv = {
     enable = true;
     bindings = {
       WHEEL_UP = "frame-back-step";
       WHEEL_DOWN = "frame-step";
+      c = "script-message load-chat";
       q = "quit-watch-later";
     };
     config = {
@@ -11,6 +12,16 @@
       sub-auto = "all";
       slang = "en";
       ytdl-raw-options = ''sub-langs="^en.*",write-subs=,write-auto-subs='';
+    };
+    scripts = with pkgs.mpvScripts; [
+      thumbfast
+      uosc
+      youtube-chat
+    ];
+    scriptOpts = {
+      mpv-youtube-chat = {
+        message-duration = 60000;
+      };
     };
   };
 }

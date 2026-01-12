@@ -9,6 +9,7 @@
     ../../config/kitty.nix
     ../../config/mpv.nix
     ../../config/nvf.nix
+    ../../config/opencode.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
   ];
@@ -88,29 +89,6 @@
         enable = true;
       };
     };
-
-    # opencode = {
-    #   enable = true;
-    #   settings = {
-    #     provider = {
-    #       chatmock = {
-    #         npm = "@ai-sdk/openai-compatible";
-    #         name = "ChatMock";
-    #         options = {
-    #           baseURL = "http://127.0.0.1:8000/v1";
-    #         };
-    #         models = {
-    #           "gpt-5" = {
-    #             name = "GPT-5";
-    #           };
-    #           "gpt-5-codex" = {
-    #             name = "GPT-5-Codex";
-    #           };
-    #         };
-    #       };
-    #     };
-    #   };
-    # };
 
     starship.enable = true;
     zsh = {

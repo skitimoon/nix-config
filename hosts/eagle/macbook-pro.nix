@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   # imports =
   #   [
   #     <nixos-hardware/common/gpu/24.05-compat.nix>

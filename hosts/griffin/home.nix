@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   username,
   ...
@@ -92,9 +93,7 @@
 
     starship.enable = true;
     zsh = {
-      initContent = lib.mkAfter ''
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-      '';
+      initContent = lib.mkAfter ''eval "$(/opt/homebrew/bin/brew shellenv)" '';
     };
   };
 

@@ -20,7 +20,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     nvf.url = "github:notashelf/nvf";
-    # aicommit2.url = "github:tak-bro/aicommit2";
   };
 
   outputs = {
@@ -49,10 +48,7 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username}.imports = [
-                nvf.homeManagerModules.default
-                ./hosts/phoenix/home.nix
-              ];
+              users.${username}.imports = [nvf.homeManagerModules.default ./hosts/phoenix/home.nix];
             };
           }
         ];
@@ -92,10 +88,7 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username}.imports = [
-                nvf.homeManagerModules.default
-                ./hosts/falcon/home.nix
-              ];
+              users.${username}.imports = [nvf.homeManagerModules.default ./hosts/falcon/home.nix];
             };
           }
         ];
@@ -118,10 +111,7 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username}.imports = [
-                nvf.homeManagerModules.default
-                ./hosts/griffin/home.nix
-              ];
+              users.${username}.imports = [nvf.homeManagerModules.default ./hosts/griffin/home.nix];
             };
           }
         ];

@@ -7,6 +7,7 @@
 }: {
   imports = [
     # Include the results of the hardware scan.
+    ../../config/nh.nix
     ./hardware-configuration.nix
   ];
 
@@ -72,15 +73,7 @@
       enable = true;
       defaultEditor = true;
     };
-    nh = {
-      enable = true;
-      clean = {
-        enable = true;
-        dates = "weekly";
-        extraArgs = "--keep 7 --keep-since 14d";
-      };
-      flake = "/home/${username}/nix-config";
-    };
+
     zsh.enable = true;
   };
 

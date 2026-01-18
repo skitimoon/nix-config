@@ -19,6 +19,7 @@
     # Include the results of the hardware scan.
     # <nixos-hardware/apple/macbook-pro/10-1>
     # <nixos-hardware/common/gpu/nvidia/disable>
+    ../../config/nh.nix
     ./macbook-pro.nix
     ./hardware-configuration.nix
   ];
@@ -170,15 +171,6 @@
   #   enableSSHSupport = true;
   # };
   programs = {
-    nh = {
-      enable = true;
-      clean = {
-        enable = true;
-        dates = "weekly";
-        extraArgs = "--keep 7 --keep-since 14d";
-      };
-      flake = "/home/${username}/nix-config";
-    };
     zsh = {
       enable = true;
       histSize = 50000;

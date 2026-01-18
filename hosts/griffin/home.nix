@@ -37,9 +37,8 @@
     bat
     brave
     devenv
-    (discord.override { withVencord = true; })
+    (discord.override {withVencord = true;})
     eza
-    # floorp-bin
     google-chrome
     ghostty-bin
     # ice-bar
@@ -62,7 +61,7 @@
     windsurf
     zed-editor
 
-    (callPackage ../../config/kdeconnect.nix { })
+    (callPackage ../../config/kdeconnect.nix {})
     # (callPackage ../../config/osc.nix {})
   ];
 
@@ -72,16 +71,16 @@
       enable = true;
       nix-direnv.enable = true;
     };
-    kitty.package = pkgs.runCommand "kitty-0.0.0" { } "mkdir $out";
+    # floorp.enable = true;
+    kitty.package = pkgs.runCommand "kitty-0.0.0" {} "mkdir $out";
     lazygit.enable = true;
 
-
-    nvf.settings.vim.languages.dart = {
-      enable = true;
-      flutter-tools = {
-        enable = true;
-      };
-    };
+    # nvf.settings.vim.languages.dart = {
+    #   enable = true;
+    #   flutter-tools = {
+    #     enable = true;
+    #   };
+    # };
 
     starship.enable = true;
     zsh = {

@@ -95,7 +95,7 @@
 
     nextcloud = {
       enable = true;
-      package = pkgs.nextcloud31;
+      package = pkgs.nextcloud32;
       database.createLocally = true;
       hostName = "yim.my.to";
       config = {

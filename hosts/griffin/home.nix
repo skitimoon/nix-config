@@ -3,12 +3,12 @@
   pkgs,
   username,
   ...
-}:
-{
+}: {
   imports = [
     ../../config/git.nix
     ../../config/kitty.nix
     ../../config/mpv.nix
+    ../../config/nh-home.nix
     ../../config/nvf.nix
     ../../config/opencode.nix
     ../../config/yazi.nix
@@ -75,14 +75,6 @@
     kitty.package = pkgs.runCommand "kitty-0.0.0" { } "mkdir $out";
     lazygit.enable = true;
 
-    nh = {
-      enable = true;
-      flake = "/Users/${username}/nix-config";
-      clean = {
-        enable = true;
-        extraArgs = "--keep 7 --keep-since 14d";
-      };
-    };
 
     nvf.settings.vim.languages.dart = {
       enable = true;

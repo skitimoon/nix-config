@@ -5,6 +5,7 @@
 }: {
   imports = [
     ../../config/git.nix
+    ../../config/nh-home.nix
     ../../config/nvf.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
@@ -41,15 +42,6 @@
       nix-direnv.enable = true;
     };
     fzf.enable = true;
-
-    nh = {
-      enable = true;
-      flake = "/home/${username}/nix-config";
-      clean = {
-        enable = true;
-        extraArgs = "--keep 7 --keep-since 14d";
-      };
-    };
 
     starship.enable = true;
   };

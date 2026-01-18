@@ -3,7 +3,7 @@
   username,
   ...
 }: {
-  imports = [./hardware-configuration.nix];
+  imports = [../../config/nh.nix ./hardware-configuration.nix];
   nix = {
     settings.experimental-features = ["nix-command" "flakes"];
     extraOptions = ''
@@ -45,11 +45,7 @@
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_GB.UTF-8";
-    supportedLocales = [
-      "en_GB.UTF-8/UTF-8"
-      "en_US.UTF-8/UTF-8"
-      "th_TH.UTF-8/UTF-8"
-    ];
+    supportedLocales = ["en_GB.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" "th_TH.UTF-8/UTF-8"];
   };
   # console = {
   #   font = "Lat2-Terminus16";
@@ -68,15 +64,7 @@
 
   programs = {
     kdeconnect.enable = true;
-    nh = {
-      enable = true;
-      clean = {
-        enable = true;
-        dates = "weekly";
-        extraArgs = "--keep 14 --keep-since 30d";
-      };
-      flake = "/home/${username}/nix-config";
-    };
+
     zsh.enable = true;
   };
 

@@ -26,10 +26,10 @@
         name = "keymapper";
         args = ["HEAD"];
       }
+      "zrok"
     ];
 
     casks = [
-      "android-studio"
       "antigravity"
       "betterzip"
       "droidcam-obs"

@@ -30,7 +30,7 @@
     bat
     btop
     fd
-    floorp
+    floorp-bin
     jq
     lazygit
     localsend

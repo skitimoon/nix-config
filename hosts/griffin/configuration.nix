@@ -73,11 +73,11 @@
     nerd-fonts.hack
   ];
 
-  # Use Determinate Nix instead
-  nix.enable = false;
-  # nix.settings = {
-  #   experimental-features = "nix-command flakes";
-  # };
+  nix = {
+    enable = true;
+    package = pkgs.lixPackageSets.stable.lix;
+    settings.experimental-features = ["nix-command" "flakes"];
+  };
 
   # Set Git commit hash for darwin-version.
   # system.configurationRevision = self.rev or self.dirtyRev or null;

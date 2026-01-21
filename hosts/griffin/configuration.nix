@@ -76,7 +76,10 @@
   nix = {
     enable = true;
     package = pkgs.lixPackageSets.stable.lix;
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["yim"];
+    };
   };
 
   # Set Git commit hash for darwin-version.

@@ -1,0 +1,59 @@
+set smoothscroll true
+set speed_step 0.25
+
+bind d scrollpage 0.5
+bind e scrollpage -0.5
+bind u scrollpage -0.5
+
+bind i focusinput -l
+bind E tabprev
+bind R tabnext
+bind Q back
+
+bind w tabpush
+bind W tabdetach
+
+bind x tabclose
+" bind x composite tabprev; tabclose #
+bind X undo
+
+bind --mode=visual t composite js document.getSelection().toString() | fillcmdline tabopen
+bind S composite js document.getSelection().toString() | fillcmdline tabopen search
+
+" search in page
+bind / fillcmdline find
+bind ? fillcmdline find --reverse
+bind n findnext --search-from-view
+bind N findnext --search-from-view --reverse
+bind gn findselect
+bind gN composite findnext --search-from-view --reverse; findselect
+bind <Escape> composite mode normal ; hidecmdline ; nohlsearch
+
+unbindurl ^https://feedly.com j
+unbindurl ^https://feedly.com k
+bindurl ^https://feedly.com l composite js document.querySelector(".ArticleTitle").href | tabopen -b
+bindurl ^https://feedly.com L composite js document.querySelector(".ArticleTitle").href | tabopen
+
+unbindurl ^https://www.youtube.com/watch .
+unbindurl ^https://www.youtube.com/watch f
+unbindurl ^https://www.youtube.com/watch j
+unbindurl ^https://www.youtube.com/watch k
+unbindurl ^https://www.youtube.com/watch l
+unbindurl ^https://www.youtube.com/watch m
+unbindurl ^https://www.youtube.com/watch p
+unbindurl ^https://www.youtube.com [[
+unbindurl ^https://www.youtube.com ]]
+unbindurl ^https://www.youtube.com <<
+unbindurl ^https://www.youtube.com >>
+bindurl ^https://www.youtube.com/watch [ composite video_with video.playbackRate -= Number(get('speed_step')) ; yt_speed_show
+bindurl ^https://www.youtube.com/watch ] composite video_with video.playbackRate += Number(get('speed_step')) ; yt_speed_show
+bindurl ^https://www.youtube.com/watch \ composite video_with video.playbackRate = 1 ; yt_speed_show
+
+" Make `i` on GitHub take you to the search box
+" bindurl ^https://github.com i hint -Vc .AppHeader-searchButton
+
+alias jse js 'use strict'; function $all(q, root=document) { return Array.from(root.querySelectorAll(q)) }; function $(q, root=document) { return root.querySelector(q) }; let $ex = (s) => tri.controller.acceptExCmd(s) ; let $set = (...args) => tri.config.set(...args); let $d = document; let $w = window; function run(f) {return f()};
+alias video_with jse let video; if (document.activeElement.name == 'VIDEO') video = document.activeElement; else video = $all('video').find(v => !v.paused); if (!video) video = $('video'); video;
+alias
+
+alias yt_speed_show video_with const oldt=$('#yttridactyl'); if (oldt) oldt.remove(); const t=document.createElement('div'); t.id="yttridactyl"; Object.assign(t.style,{position:'fixed',left:'50%',top:'15%',transform:'translate(-50%,-50%)',backgroundColor:'rgba(0,0,0,0.35)',color:'white',padding:'12px 20px',borderRadius:'8px',fontSize:'18px',zIndex:'9999',opacity:'1',transition:'opacity 0.5s ease-in-out'}); t.textContent=`${video.playbackRate}x`; document.getElementById('movie_player').appendChild(t); setTimeout(()=>t.style.opacity='0',1000); setTimeout(()=>t.remove(),1500);

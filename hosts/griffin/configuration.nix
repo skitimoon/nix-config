@@ -52,6 +52,7 @@
 
     taps = [
       # "houmain/tap" # keymapper
+      "steipete/tap" # codexbar
     ];
 
     masApps = {

@@ -104,6 +104,11 @@
           ./hosts/griffin/configuration.nix
           home-manager.darwinModules.home-manager
           {
+            nixpkgs.overlays = [
+              (final: prev: {
+                swift = nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system}.swift;
+              })
+            ];
             users.users.${username}.home = nixpkgs.lib.mkDefault /Users/${username};
             home-manager = {
               extraSpecialArgs = {
@@ -128,6 +133,13 @@
           inherit inputs username;
         };
       };
+    };
+
+    # Formatter for `nix fmt`
+    formatter = {
+      x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+      aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.alejandra;
+      aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
     };
   };
 }

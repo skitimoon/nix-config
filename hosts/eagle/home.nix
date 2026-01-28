@@ -5,7 +5,6 @@
 }: {
   imports = [
     ../../config/mpv.nix
-    ../../config/neovim.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
   ];
@@ -47,11 +46,7 @@
     fzf.enable = true;
     git = {
       enable = true;
-      userEmail = "s.kitimoon@gmail.com";
-      userName = "skitimoon";
-      ignores = [
-        ".stfolder"
-      ];
+      ignores = [".stfolder"];
     };
     kitty = {
       enable = true;

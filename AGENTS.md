@@ -139,6 +139,39 @@ callback = lib.generators.mkLuaInline ''
 - **nix-darwin**: macOS system configuration
 - **nvf**: Neovim configuration framework
 
+## Commit Message Guidelines
+
+Use [Conventional Commits](https://www.conventionalcommits.org/) format:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+- **feat**: New feature
+- **fix**: Bug fix
+- **docs**: Documentation changes
+- **style**: Formatting, whitespace (no code change)
+- **refactor**: Code restructuring (no feature/fix)
+- **chore**: Build process, dependencies, tooling
+- **test**: Adding or updating tests
+
+### Scopes (optional)
+Use the hostname or config area: `phoenix`, `griffin`, `nvf`, `git`, `zsh`, etc.
+
+### Examples
+```
+feat(phoenix): add steam gaming support
+fix(nvf): correct telescope keybinding conflict
+chore: update flake inputs
+docs: add conventional commits to AGENTS.md
+refactor(zsh): simplify alias definitions
+```
+
 ## Important Notes
 1. **stateVersion**: Never change without reading migration notes
 2. **hardware-configuration.nix**: Auto-generated, don't edit manually

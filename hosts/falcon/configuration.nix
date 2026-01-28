@@ -7,7 +7,7 @@
 }: {
   imports = [
     # Include the results of the hardware scan.
-    ../../config/nh.nix
+    # ../../config/nh.nix
     ./hardware-configuration.nix
   ];
 
@@ -127,6 +127,7 @@
     };
 
     openssh.enable = true;
+    tailscale.enable = true;
   };
 
   security.acme = {

@@ -20,10 +20,8 @@
   homebrew = {
     enable = true;
     brews = [
-      "cocoapods"
-      "gemini-cli"
       {
-        name = "keymapper";
+        name = "houmain/tap/keymapper";
         args = ["HEAD"];
       }
       "zrok"
@@ -33,6 +31,7 @@
       "antigravity"
       "betterzip"
       "droidcam-obs"
+      "steipete/tap/codexbar"
       "floorp"
       "flutter"
       "font-sf-pro"
@@ -43,6 +42,7 @@
       "middleclick"
       "nextcloud"
       "obs"
+      "opencode-desktop"
       "sf-symbols"
       "steam"
       "trae"
@@ -51,7 +51,7 @@
     ];
 
     taps = [
-      "houmain/tap" # keymapper
+      # "houmain/tap" # keymapper
     ];
 
     masApps = {
@@ -66,6 +66,10 @@
       upgrade = true;
       cleanup = "zap";
     };
+  };
+
+  services = {
+    tailscale.enable = true;
   };
 
   fonts.packages = with pkgs; [

@@ -2,7 +2,14 @@
   programs.opencode = {
     enable = true;
     settings = {
-      plugin = ["opencode-antigravity-auth@beta"];
+      formatter = {
+        nixfmt.disabled = true;
+        alejandra = {
+          command = ["alejandra" "$FILE"];
+          extensions = [".nix"];
+        };
+      };
+      plugin = ["opencode-antigravity-auth@beta" "@mohak34/opencode-notifier@latest"];
       provider = {
         google = {
           models = {

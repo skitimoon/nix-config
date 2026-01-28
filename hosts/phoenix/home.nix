@@ -8,6 +8,7 @@
     ../../config/kitty.nix
     ../../config/mpv.nix
     ../../config/nvf.nix
+    ../../config/tridactyl.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
   ];

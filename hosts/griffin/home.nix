@@ -8,9 +8,10 @@
     ../../config/git.nix
     ../../config/kitty.nix
     ../../config/mpv.nix
-    ../../config/nh-home.nix
+    ../../config/nh.nix
     ../../config/nvf.nix
     ../../config/opencode.nix
+    ../../config/tridactyl.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
   ];
@@ -32,6 +33,7 @@
 
   home.packages = with pkgs; [
     aldente
+    alejandra
     aerospace
     ayugram-desktop
     bat
@@ -39,6 +41,7 @@
     devenv
     (discord.override {withVencord = true;})
     eza
+    gemini-cli-bin
     google-chrome
     ghostty-bin
     # ice-bar
@@ -46,7 +49,6 @@
     # kiro # error when unpack
     localsend
     logseq
-    nixfmt
     raycast
     ripgrep
     sketchybar
@@ -75,16 +77,9 @@
     kitty.package = pkgs.runCommand "kitty-0.0.0" {} "mkdir $out";
     lazygit.enable = true;
 
-    # nvf.settings.vim.languages.dart = {
-    #   enable = true;
-    #   flutter-tools = {
-    #     enable = true;
-    #   };
-    # };
-
     starship.enable = true;
     zsh = {
-      initContent = lib.mkAfter ''eval "$(/opt/homebrew/bin/brew shellenv)" '';
+      initContent = lib.mkAfter ''eval "$(/opt/homebrew/bin/brew shellenv)"'';
     };
   };
 

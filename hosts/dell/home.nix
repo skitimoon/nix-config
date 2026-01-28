@@ -5,7 +5,7 @@
 }: {
   imports = [
     ../../config/git.nix
-    ../../config/nh-home.nix
+    ../../config/nh.nix
     ../../config/nvf.nix
     ../../config/yazi.nix
     ../../config/zsh.nix

@@ -19,18 +19,9 @@
 
   programs.home-manager.enable = true;
 
-  xdg = {
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
-  };
-
   home.packages = with pkgs; [
     bat
     eza
-    fd
-    jq
     lazygit
     ripgrep
     tldr

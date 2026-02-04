@@ -104,11 +104,6 @@
           ./hosts/griffin/configuration.nix
           home-manager.darwinModules.home-manager
           {
-            nixpkgs.overlays = [
-              (final: prev: {
-                swift = nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system}.swift;
-              })
-            ];
             users.users.${username}.home = nixpkgs.lib.mkDefault /Users/${username};
             home-manager = {
               extraSpecialArgs = {

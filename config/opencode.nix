@@ -9,7 +9,7 @@
           extensions = [".nix"];
         };
       };
-      plugin = ["opencode-antigravity-auth@beta" "@mohak34/opencode-notifier@latest"];
+      plugin = ["opencode-antigravity-auth@beta"];
       provider = {
         google = {
           models = {

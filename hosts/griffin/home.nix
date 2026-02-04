@@ -69,6 +69,7 @@
 
   programs = {
     codex.enable = true;
+    nh.darwinFlake = "/Users/${username}/nix-config";
     direnv = {
       enable = true;
       nix-direnv.enable = true;

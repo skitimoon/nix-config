@@ -19,7 +19,7 @@
     # Include the results of the hardware scan.
     # <nixos-hardware/apple/macbook-pro/10-1>
     # <nixos-hardware/common/gpu/nvidia/disable>
-    ../../config/nh-system.nix
+    ../../config/nh.nix
     ./macbook-pro.nix
     ./hardware-configuration.nix
   ];

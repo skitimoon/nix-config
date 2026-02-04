@@ -125,6 +125,17 @@
       };
     };
 
+    nginx.virtualHosts."gym.my.to" = {
+      forceSSL = true;
+      enableACME = true;
+      locations = {
+        "/" = {
+          proxyPass = "http://127.0.0.1:5678/";
+          proxyWebsockets = true;
+        };
+      };
+    };
+
     openssh.enable = true;
     tailscale.enable = true;
   };
@@ -134,14 +145,12 @@
     certs = {
       ${config.services.nextcloud.hostName}.email = "s.kitimoon+letsencrypt@gmail.com";
       "nnn.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
+      "gym.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
     };
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
+  networking.firewall.allowedTCPPorts = [80 443];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

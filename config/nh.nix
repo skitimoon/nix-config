@@ -1,7 +1,7 @@
-{config, ...}: {
+{username, ...}: {
   programs.nh = {
     enable = true;
-    flake = "${config.home.homeDirectory}/nix-config";
+    flake = "/home/${username}/nix-config";
     clean = {
       enable = true;
       dates = "weekly";

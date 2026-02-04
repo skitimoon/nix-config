@@ -1,13 +1,12 @@
 {
   pkgs,
-  inputs,
   username,
   config,
   ...
 }: {
   imports = [
     # Include the results of the hardware scan.
-    # ../../config/nh.nix
+    ../../config/nh.nix
     ./hardware-configuration.nix
   ];
 

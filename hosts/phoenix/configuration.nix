@@ -3,7 +3,7 @@
   username,
   ...
 }: {
-  imports = [../../config/nh-system.nix ./hardware-configuration.nix];
+  imports = [../../config/nh.nix ./hardware-configuration.nix];
   nix = {
     settings.experimental-features = ["nix-command" "flakes"];
     extraOptions = ''

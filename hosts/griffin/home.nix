@@ -36,11 +36,9 @@
     alejandra
     aerospace
     ayugram-desktop
-    bat
     brave
     devenv
     (discord.override {withVencord = true;})
-    eza
     gemini-cli-bin
     google-chrome
     ghostty-bin
@@ -56,9 +54,7 @@
     super-productivity
     tldr
     unnaturalscrollwheels
-    uv
-    vesktop
-    vscode
+    # vesktop
     warp-terminal
     windsurf
     zed-editor
@@ -68,17 +64,27 @@
   ];
 
   programs = {
+    bat.enable = true;
     codex.enable = true;
-    nh.darwinFlake = "/Users/${username}/nix-config";
     direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
+    eza.enable = true;
     # floorp.enable = true;
     kitty.package = pkgs.runCommand "kitty-0.0.0" {} "mkdir $out";
+    lazydocker = {
+      enable = true;
+      settings.commandTemplates = {
+        docker = "podman";
+        dockerCompose = "podman compose";
+      };
+    };
     lazygit.enable = true;
-
+    nh.darwinFlake = "/Users/${username}/nix-config";
     starship.enable = true;
+    uv.enable = true;
+    vscode.enable = true;
     zsh = {
       initContent = lib.mkAfter ''eval "$(/opt/homebrew/bin/brew shellenv)"'';
     };

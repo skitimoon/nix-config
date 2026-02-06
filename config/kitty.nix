@@ -3,6 +3,7 @@
     enable = true;
     font.name = "JetBrainsMono Nerd Font Mono";
     settings = {
+      clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
       enable_audio_bell = false;
       macos_option_as_alt = true;
       notify_on_cmd_finish = "unfocused";

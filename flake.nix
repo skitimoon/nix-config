@@ -20,6 +20,8 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     nvf.url = "github:notashelf/nvf";
+    agenix.url = "github:ryantm/agenix";
+    nix-openclaw.url = "github:openclaw/nix-openclaw";
   };
 
   outputs = {
@@ -79,6 +81,7 @@
           inherit inputs username;
         };
         modules = [
+          inputs.agenix.nixosModules.default
           ./hosts/falcon/configuration.nix
           home-manager-stable.nixosModules.home-manager
           {
@@ -88,7 +91,7 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username}.imports = [nvf.homeManagerModules.default ./hosts/falcon/home.nix];
+              users.${username}.imports = [nvf.homeManagerModules.default inputs.nix-openclaw.homeManagerModules.openclaw ./hosts/falcon/home.nix];
             };
           }
         ];

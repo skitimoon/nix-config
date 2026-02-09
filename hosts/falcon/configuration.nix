@@ -1,6 +1,7 @@
 {
   pkgs,
   username,
+  inputs,
   config,
   ...
 }: {
@@ -66,7 +67,10 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [inputs.nix-openclaw.overlays.default];
+  };
   programs = {
     neovim = {
       enable = true;
@@ -81,11 +85,28 @@
     wget
   ];
 
+  age.secrets = {
+    telegram-bot-token = {
+      file = ./secrets/telegram-bot-token.age;
+      owner = username;
+      mode = "0400";
+    };
+    openclaw-gateway-token-env = {
+      file = ./secrets/openclaw-gateway-token-env.age;
+      owner = username;
+      mode = "0400";
+    };
+    nextcloud-admin-pass = {
+      file = ./secrets/nextcloud-admin-pass.age;
+      owner = "nextcloud";
+      mode = "0400";
+    };
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
 
   # List services that you want to enable:
-  environment.etc."nextcloud-admin-pass".text = "qwertyuiop[]\\01";
   services = {
     n8n = {
       enable = true;
@@ -98,7 +119,7 @@
       database.createLocally = true;
       hostName = "yim.my.to";
       config = {
-        adminpassFile = "/etc/nextcloud-admin-pass";
+        adminpassFile = config.age.secrets.nextcloud-admin-pass.path;
         dbtype = "pgsql";
       };
       https = true;

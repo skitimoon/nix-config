@@ -24,7 +24,6 @@
         name = "houmain/tap/keymapper";
         args = ["HEAD"];
       }
-      "zrok"
     ];
 
     casks = [

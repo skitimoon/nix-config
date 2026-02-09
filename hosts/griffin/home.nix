@@ -40,7 +40,6 @@
     devenv
     (discord.override {withVencord = true;})
     gemini-cli-bin
-    google-chrome
     ghostty-bin
     # ice-bar
     jankyborders

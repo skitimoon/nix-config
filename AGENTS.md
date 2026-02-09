@@ -29,10 +29,10 @@ config/            # Shared tool configurations (nvf.nix, git.nix, zsh.nix, etc.
 nix flake check
 
 # Format all Nix files (uses Alejandra)
-nix fmt
+nix fmt .
 
 # Format a single file
-alejandra <file.nix>
+nix fmt <file.nix>
 ```
 
 ### Rebuild Systems
@@ -176,5 +176,6 @@ refactor(zsh): simplify alias definitions
 1. **stateVersion**: Never change without reading migration notes
 2. **hardware-configuration.nix**: Auto-generated, don't edit manually
 3. **Flake path**: Expected at `~/nix-config` for `nh` commands
+4. **OpenClaw config**: Uses nix-openclaw — don't edit `openclaw.json` or Nix-generated workspace files directly; update the Nix source here instead
 4. **Homebrew on macOS**: Managed declaratively via nix-darwin
 5. **Secrets**: Never commit `.env`, credentials, or API keys

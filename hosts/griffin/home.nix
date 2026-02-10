@@ -37,6 +37,7 @@
     aerospace
     ayugram-desktop
     brave
+    bun
     devenv
     (discord.override {withVencord = true;})
     gemini-cli-bin

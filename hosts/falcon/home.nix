@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   username,
   ...
@@ -19,6 +20,9 @@
 
   programs.home-manager.enable = true;
 
+  # Workaround for nix-openclaw managing the same path via home.file and activation.
+  home.file.".openclaw/openclaw.json".force = true;
+
   home.packages = with pkgs; [
     bat
     eza
@@ -31,6 +35,21 @@
   programs = {
     fzf.enable = true;
     starship.enable = true;
+    zsh.initContent = lib.mkAfter ''
+      # Run openclaw with runtime secrets from agenix env file.
+      openclaw() {
+        if [[ -r /run/agenix/openclaw-gateway-token-env ]]; then
+          (
+            set -a
+            . /run/agenix/openclaw-gateway-token-env
+            set +a
+            command openclaw "$@"
+          )
+        else
+          command openclaw "$@"
+        fi
+      }
+    '';
   };
 
   programs.openclaw = {
@@ -42,7 +61,6 @@
 
     instances.default = {
       enable = true;
-      systemd.enable = true;
       config = {
         auth.profiles."google-antigravity:s.kitimoon@gmail.com" = {
           provider = "google-antigravity";
@@ -51,7 +69,9 @@
         };
 
         agents.defaults = {
-          model.primary = "google-antigravity/claude-opus-4-5-thinking";
+          model.primary = "google-antigravity/gemini-3-pro-high";
+          models."google-antigravity/gemini-3-pro-high" = {};
+          models."google-antigravity/gemini-3-flash" = {};
           models."google-antigravity/claude-opus-4-5-thinking" = {};
         };
 

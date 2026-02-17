@@ -52,7 +52,7 @@ darwin-rebuild switch --flake .#griffin    # Standard
 
 **Home Manager standalone:**
 ```bash
-home-manager switch --flake .#yim@dell
+nh home switch
 ```
 
 ## Code Style Guidelines
@@ -106,14 +106,6 @@ imports = [
 - **Attributes**: kebab-case (`indent-blankline`)
 - **Files**: lowercase with hyphens/dots (`nvf.nix`, `hardware-configuration.nix`)
 
-### Error Handling / Overrides
-```nix
-home.homeDirectory = lib.mkDefault /home/${username};   # Overridable default
-programs.zsh.initContent = lib.mkAfter ''extra'';       # Append config
-# lib.mkForce - use sparingly
-# lib.mkIf condition { ... } - conditional config
-```
-
 ### Module Patterns
 ```nix
 programs.fzf.enable = true;                    # Simple enable
@@ -122,15 +114,6 @@ programs.direnv = {                            # With options
   enable = true;
   nix-direnv.enable = true;
 };
-```
-
-### Lua in Nix (for nvf)
-```nix
-callback = lib.generators.mkLuaInline ''
-  function(event)
-    vim.bo[event.buf].buflisted = false
-  end
-'';
 ```
 
 ## Key Dependencies
@@ -177,5 +160,8 @@ refactor(zsh): simplify alias definitions
 2. **hardware-configuration.nix**: Auto-generated, don't edit manually
 3. **Flake path**: Expected at `~/nix-config` for `nh` commands
 4. **OpenClaw config**: Uses nix-openclaw — don't edit `openclaw.json` or Nix-generated workspace files directly; update the Nix source here instead
-4. **Homebrew on macOS**: Managed declaratively via nix-darwin
-5. **Secrets**: Never commit `.env`, credentials, or API keys
+5. **OpenClaw runtime env**: `OPENCLAW_TELEGRAM_ALLOW_FROM` and other OpenClaw secrets come from `/run/agenix/openclaw-gateway-token-env` via a zsh wrapper in `hosts/falcon/home.nix`; in non-interactive contexts, run `zsh -ic 'openclaw <cmd>'` or source that file before invoking `openclaw`
+6. **Gog runtime env**: `GOG_KEYRING_PASSWORD` should come from `/run/agenix/gog-keyring-env` via the zsh wrapper in `hosts/falcon/home.nix`; in non-interactive contexts, run `zsh -ic 'gog <cmd>'` or source that file before invoking `gog`.
+7. **Homebrew on macOS**: Managed declaratively via nix-darwin
+8. **Secrets**: Never commit `.env`, credentials, or API keys
+9. **Validating new files with flake refs (`.#...`)**: Stage new files first (`git add <file>`), because Git-based flake evaluation excludes untracked files. If you do not want to stage yet, use `path:.#...` for local-only validation.

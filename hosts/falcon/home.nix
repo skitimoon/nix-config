@@ -143,6 +143,10 @@
           auth.mode = "token";
         };
 
+        messages.queue = {
+          mode = "steer";
+        };
+
         channels.telegram = {
           tokenFile = "/run/agenix/telegram-bot-token";
           # Sourced from /run/agenix/openclaw-gateway-token-env

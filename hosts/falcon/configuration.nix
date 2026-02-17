@@ -89,19 +89,25 @@
     telegram-bot-token = {
       file = ./secrets/telegram-bot-token.age;
       owner = username;
-      mode = "0400";
     };
     openclaw-gateway-token-env = {
       file = ./secrets/openclaw-gateway-token-env.age;
       owner = username;
-      mode = "0400";
+    };
+    gog-keyring-env = {
+      file = ./secrets/gog-keyring-env.age;
+      owner = username;
     };
     nextcloud-admin-pass = {
       file = ./secrets/nextcloud-admin-pass.age;
       owner = "nextcloud";
-      mode = "0400";
     };
   };
+
+  # Keep agenix integration centralized in the host module.
+  home-manager.users.${username}.systemd.user.services.openclaw-gateway.Service.EnvironmentFile = [
+    config.age.secrets.openclaw-gateway-token-env.path
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -169,6 +175,8 @@
       "gym.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
     };
   };
+
+  nix.settings.trusted-users = ["yim"];
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [80 443];

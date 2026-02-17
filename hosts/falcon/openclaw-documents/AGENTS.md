@@ -5,6 +5,7 @@ You are operating on Falcon (NixOS, x86_64-linux).
 
 **Nix config repo:** `~/nix-config` — this is where to edit Nix-managed files (including this one).
 **Don't edit** `openclaw.json` or other Nix-generated files directly — changes get overwritten on rebuild.
+For shell commands, OpenClaw runtime secrets are loaded from `/run/agenix/openclaw-gateway-token-env`; in non-interactive contexts use `zsh -ic 'openclaw <cmd>'` or source that file before running `openclaw`.
 
 This folder is home. Treat it that way.
 

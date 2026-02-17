@@ -42,7 +42,6 @@
     (discord.override {withVencord = true;})
     gemini-cli-bin
     ghostty-bin
-    # ice-bar
     jankyborders
     # kiro # error when unpack
     localsend

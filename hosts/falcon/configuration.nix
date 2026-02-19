@@ -107,6 +107,7 @@
   # Keep agenix integration centralized in the host module.
   home-manager.users.${username}.systemd.user.services.openclaw-gateway.Service.EnvironmentFile = [
     config.age.secrets.openclaw-gateway-token-env.path
+    config.age.secrets.gog-keyring-env.path
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

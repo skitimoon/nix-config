@@ -32,7 +32,7 @@
     ripgrep
     tldr
     trash-cli
-    (callPackage ../../config/gogcli.nix {})
+    # (callPackage ../../config/gogcli.nix {})
   ];
 
   programs = {
@@ -86,9 +86,9 @@
       enable = true;
       config = {
         agents.defaults = {
-          model.primary = "openai-codex/gpt-5.3-codex";
+          model.primary = "openai-codex/gpt-5.4";
           models = {
-            "openai-codex/gpt-5.3-codex".alias = "codex";
+            "openai-codex/gpt-5.4".alias = "codex";
             "qwen-portal/coder-model".alias = "qwen";
             "qwen-portal/vision-model" = {};
             "kimi-coding/k2p5".alias = "kimi";
@@ -141,6 +141,7 @@
         gateway = {
           mode = "local";
           auth.mode = "token";
+          controlUi.allowedOrigins = ["https://falcon.calliope-godzilla.ts.net:8443"];
         };
 
         messages.queue = {

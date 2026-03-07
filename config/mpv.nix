@@ -6,9 +6,12 @@
       WHEEL_DOWN = "frame-step";
       c = "script-message chat-hidden";
       q = "quit-watch-later";
+      Q = "quit";
     };
     config = {
       cache-secs = 3600;
+      demuxer-max-bytes = "512MiB";
+      demuxer-max-back-bytes = "256MiB";
       sub-auto = "all";
       slang = "en";
       ytdl-raw-options = ''sub-langs="^en.*",write-subs=,write-auto-subs='';

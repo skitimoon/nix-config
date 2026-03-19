@@ -33,7 +33,6 @@
 
   home.packages = with pkgs; [
     aldente
-    alejandra
     aerospace
     ayugram-desktop
     brave
@@ -47,6 +46,8 @@
     # kiro # error when unpack
     localsend
     logseq
+    oxfmt
+    oxlint
     raycast
     ripgrep
     sketchybar
@@ -55,7 +56,7 @@
     tldr
     unnaturalscrollwheels
     # vesktop
-    warp-terminal
+    # warp-terminal
     windsurf
     zed-editor
 
@@ -71,6 +72,9 @@
       nix-direnv.enable = true;
     };
     eza.enable = true;
+    gh = {
+      enable = true;
+    };
     # floorp.enable = true;
     kitty.package = pkgs.runCommand "kitty-0.0.0" {} "mkdir $out";
     lazydocker = {

@@ -4,6 +4,7 @@
     bindings = {
       WHEEL_UP = "frame-back-step";
       WHEEL_DOWN = "frame-step";
+      "CTRL+j" = "script-message load-chat";
       c = "script-message chat-hidden";
       q = "quit-watch-later";
       Q = "quit";

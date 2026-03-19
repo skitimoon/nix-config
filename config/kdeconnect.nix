@@ -6,11 +6,11 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "kdeconnect";
-  version = "5958";
+  version = "6016";
 
   src = fetchurl {
     url = "https://cdn.kde.org/ci-builds/network/kdeconnect-kde/master/macos-arm64/kdeconnect-kde-master-${version}-macos-clang-arm64.dmg";
-    sha256 = "sha256-4qPAq+tyKJh7qQ6z4UNBjw3QJE6KJ5bpeVxULddMl7I=";
+    sha256 = "sha256-h/4nUf4Bgs6cEcUWJ1oNQnU3Jt30bLQfZT/pofphRnE=";
   };
 
   sourceRoot = "KDE Connect.app";

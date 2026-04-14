@@ -27,10 +27,20 @@
         {
           on = "!";
           for = "unix";
-          run = ''shell "$SHELL" --block'';
+          run = ''shell 'exec env YAZI_SHELL=1 "$SHELL" -i' --block'';
           desc = "Open $SHELL here";
         }
       ];
+    };
+  };
+
+  programs.starship.settings = {
+    format = "\${custom.yazi}$all";
+    custom.yazi = {
+      command = "printf '(Yazi)'";
+      when = ''test -n "$YAZI_SHELL"'';
+      format = "[$output]($style) ";
+      style = "bold yellow";
     };
   };
 }

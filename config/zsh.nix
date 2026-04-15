@@ -29,6 +29,7 @@
       syntaxHighlighting.enable = true;
       shellAliases = {
         ncf = "cd ~/nix-config && nvim && cd -";
+        cx = "nix run github:numtide/llm-agents.nix#codex -- --yolo";
         l = "eza -lF";
         la = "eza -laF";
         ll = "eza -l";

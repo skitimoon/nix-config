@@ -25,6 +25,11 @@
           desc = "Cd to /tmp";
         }
         {
+          on = ["g" "y"];
+          run = "cd ~/Movies/YouTube";
+          desc = "Cd to ~/Movies/YouTube";
+        }
+        {
           on = "!";
           for = "unix";
           run = ''shell 'exec env YAZI_SHELL=1 "$SHELL" -i' --block'';

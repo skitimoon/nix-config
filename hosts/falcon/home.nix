@@ -32,7 +32,6 @@
     ripgrep
     tldr
     trash-cli
-    # (callPackage ../../config/gogcli.nix {})
   ];
 
   programs = {
@@ -81,6 +80,7 @@
 
     package = pkgs.openclaw;
     excludeTools = ["ripgrep"];
+    bundledPlugins.gogcli.enable = true;
 
     instances.default = {
       enable = true;
@@ -91,7 +91,6 @@
             "openai-codex/gpt-5.4".alias = "codex";
             "qwen-portal/coder-model".alias = "qwen";
             "qwen-portal/vision-model" = {};
-            "kimi-coding/k2p5".alias = "kimi";
             "modal-glm5/zai-org/GLM-5-FP8".alias = "glm5";
           };
         };

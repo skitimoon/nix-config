@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   username,
   inputs,
   config,
@@ -69,7 +70,65 @@
   # $ nix search wget
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [inputs.nix-openclaw.overlays.default];
+    overlays = [
+      inputs.nix-openclaw.overlays.default
+      (final: prev: let
+        mkOpenclawPackages = {
+          toolNamesOverride ? null,
+          excludeToolNames ? [],
+        }: let
+          upstreamPackages = import "${inputs.nix-openclaw}/nix/packages" {
+            pkgs = final;
+            inherit toolNamesOverride excludeToolNames;
+          };
+        in
+          upstreamPackages
+          // {
+            openclaw-gateway = final.openclaw-gateway;
+            openclaw = final.buildEnv {
+              name = upstreamPackages.openclaw.name;
+              paths = [
+                final.openclaw-gateway
+                upstreamPackages.openclaw-tools
+              ];
+              pathsToLink = ["/bin"];
+            };
+          };
+        defaultOpenclawPackages = mkOpenclawPackages {};
+      in {
+        openclaw-gateway = prev.openclaw-gateway.overrideAttrs (old: {
+          installPhase =
+            old.installPhase
+            + "\n"
+            + ''
+              # Work around nix-openclaw packaging expecting plugin manifests
+              # under dist/extensions while they are currently installed under
+              # lib/openclaw/extensions.
+              if [ -d "$out/lib/openclaw/extensions" ]; then
+                mkdir -p "$out/lib/openclaw/dist/extensions"
+                for ext in "$out"/lib/openclaw/extensions/*; do
+                  [ -d "$ext" ] || continue
+                  name="$(basename "$ext")"
+                  mkdir -p "$out/lib/openclaw/dist/extensions/$name"
+                  if [ -e "$ext/openclaw.plugin.json" ] && [ ! -e "$out/lib/openclaw/dist/extensions/$name/openclaw.plugin.json" ]; then
+                    cp "$ext/openclaw.plugin.json" "$out/lib/openclaw/dist/extensions/$name/openclaw.plugin.json"
+                  fi
+                done
+              fi
+            '';
+        });
+        openclaw = defaultOpenclawPackages.openclaw;
+        openclawPackages =
+          defaultOpenclawPackages
+          // {
+            toolNames =
+              (import "${inputs.nix-openclaw}/nix/tools/extended.nix" {
+                pkgs = final;
+              }).toolNames;
+            withTools = mkOpenclawPackages;
+          };
+      })
+    ];
   };
   programs = {
     neovim = {
@@ -105,10 +164,20 @@
   };
 
   # Keep agenix integration centralized in the host module.
-  home-manager.users.${username}.systemd.user.services.openclaw-gateway.Service.EnvironmentFile = [
-    config.age.secrets.openclaw-gateway-token-env.path
-    config.age.secrets.gog-keyring-env.path
-  ];
+  home-manager.users.${username} = let
+    openclawGatewayWrapper = pkgs.writeShellScriptBin "openclaw-gateway-default" ''
+      set -euo pipefail
+      exec "${pkgs.openclaw-gateway}/bin/openclaw" "$@"
+    '';
+  in {
+    systemd.user.services.openclaw-gateway.Service = {
+      EnvironmentFile = [
+        config.age.secrets.openclaw-gateway-token-env.path
+        config.age.secrets.gog-keyring-env.path
+      ];
+      ExecStart = lib.mkForce "${openclawGatewayWrapper}/bin/openclaw-gateway-default gateway --port 18789";
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

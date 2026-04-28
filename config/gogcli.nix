@@ -5,20 +5,20 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "gogcli";
-  version = "0.11.0";
+  version = "0.12.0";
 
   src =
     if stdenvNoCC.hostPlatform.system == "x86_64-linux"
     then
       fetchurl {
         url = "https://github.com/steipete/gogcli/releases/download/v${finalAttrs.version}/gogcli_${finalAttrs.version}_linux_amd64.tar.gz";
-        sha256 = "sha256-ypi6VuKczTcT/nv4Nf3KAK4bl83LewvF45Pn7bQInIQ=";
+        sha256 = "sha256-oD/MvWfqLlmialbpLeiRhXf0vr5LL5RoI0GXd4J82rI=";
       }
     else if stdenvNoCC.hostPlatform.system == "aarch64-linux"
     then
       fetchurl {
         url = "https://github.com/steipete/gogcli/releases/download/v${finalAttrs.version}/gogcli_${finalAttrs.version}_linux_arm64.tar.gz";
-        sha256 = "sha256-G/6YBUVkFQFIj+2Txm/HZnHHKkYFKF9XRXLaxwDv3TU=";
+        sha256 = "sha256-1/IElNfrDocWYxhT0FXMuzaMe4HLgWX1W0WIS8y2e0s=";
       }
     else throw "Unsupported system for gogcli: ${stdenvNoCC.hostPlatform.system}";
 

@@ -20,6 +20,11 @@
           desc = "Cd to /";
         }
         {
+          on = ["g" "p"];
+          run = "cd ~/Projects/ppm-odoo/";
+          desc = "Cd to ~/Projects/ppm-odoo/";
+        }
+        {
           on = ["g" "t"];
           run = "cd /tmp";
           desc = "Cd to /tmp";
@@ -28,6 +33,11 @@
           on = ["g" "y"];
           run = "cd ~/Movies/YouTube";
           desc = "Cd to ~/Movies/YouTube";
+        }
+        {
+          on = ["g" "l"];
+          run = ''shell 'lazygit' --block'';
+          desc = "Open lazygit";
         }
         {
           on = "!";

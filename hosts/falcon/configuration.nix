@@ -234,7 +234,6 @@
     };
 
     openssh.enable = true;
-    tailscale.enable = true;
   };
 
   security.acme = {

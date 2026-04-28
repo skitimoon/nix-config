@@ -1,10 +1,23 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   security.pam.services.sudo_local.touchIdAuth = true;
 
   # environment.systemPackages = [
   # ];
 
-  nixpkgs = {config.allowUnfree = true;};
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [
+      (_final: prev: {
+        direnv = prev.direnv.override {
+          zsh = inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system}.zsh;
+        };
+      })
+    ];
+  };
 
   programs = {
     zsh = {
@@ -25,14 +38,16 @@
     ];
 
     casks = [
+      "affine"
       "antigravity"
+      "BarutSRB/tap/omniwm"
       "betterzip"
+      "cloudflare-warp"
       "codex-app"
       "codexmonitor"
       "droidcam-obs"
       "steipete/tap/codexbar"
       "floorp"
-      "flutter"
       "font-sf-pro"
       "hammerspoon"
       "helium-browser"
@@ -44,18 +59,23 @@
       "nextcloud"
       "obs"
       "opencode-desktop"
+      "piphero"
       "protonvpn"
       "sf-symbols"
+      "stats"
       "steam"
       "t3-code"
+      "tailscale-app"
       "thaw"
       "trae"
       "wacom-tablet"
+      "wispr-flow"
       "zen"
     ];
 
     taps = [
       # "houmain/tap" # keymapper
+      "BarutSRB/tap" # omniwm
       "steipete/tap" # codexbar
     ];
 
@@ -71,10 +91,6 @@
       upgrade = true;
       cleanup = "zap";
     };
-  };
-
-  services = {
-    tailscale.enable = true;
   };
 
   fonts.packages = with pkgs; [

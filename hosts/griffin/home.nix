@@ -3,7 +3,13 @@
   pkgs,
   username,
   ...
-}: {
+}: let
+  podmanPackage = pkgs.podman;
+  podmanDockerCompat = pkgs.runCommand "podman-docker-compat" {} ''
+    mkdir -p "$out/bin"
+    ln -s ${podmanPackage}/bin/podman "$out/bin/docker"
+  '';
+in {
   imports = [
     ../../config/git.nix
     ../../config/kitty.nix
@@ -42,14 +48,20 @@
     (discord.override {withVencord = true;})
     gemini-cli-bin
     ghostty-bin
+    google-chrome
+    gws
     jankyborders
     # kiro # error when unpack
     localsend
     logseq
+    nodejs
     oxfmt
     oxlint
+    podman-compose
+    podmanDockerCompat
     raycast
     ripgrep
+    ruff
     sketchybar
     sketchybar-app-font
     super-productivity
@@ -77,13 +89,6 @@
     };
     # floorp.enable = true;
     kitty.package = pkgs.runCommand "kitty-0.0.0" {} "mkdir $out";
-    lazydocker = {
-      enable = true;
-      settings.commandTemplates = {
-        docker = "podman";
-        dockerCompose = "podman compose";
-      };
-    };
     lazygit.enable = true;
     nh.darwinFlake = "/Users/${username}/nix-config";
     starship.enable = true;
@@ -123,6 +128,11 @@
   };
 
   services = {
+    podman = {
+      enable = true;
+      package = podmanPackage;
+      settings.containers.engine.compose_warning_logs = false;
+    };
     syncthing = {
       enable = true;
       overrideDevices = false;

@@ -4,6 +4,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     # For macOS
     nix-darwin = {
@@ -21,7 +22,7 @@
     };
     nvf.url = "github:notashelf/nvf";
     agenix.url = "github:ryantm/agenix";
-    nix-openclaw.url = "github:openclaw/nix-openclaw";
+    hermes-agent.url = "github:NousResearch/hermes-agent";
   };
 
   outputs = {
@@ -50,7 +51,10 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username}.imports = [nvf.homeManagerModules.default ./hosts/phoenix/home.nix];
+              users.${username}.imports = [
+                nvf.homeManagerModules.default
+                ./hosts/phoenix/home.nix
+              ];
             };
           }
         ];
@@ -82,6 +86,7 @@
         };
         modules = [
           inputs.agenix.nixosModules.default
+          inputs.hermes-agent.nixosModules.default
           ./hosts/falcon/configuration.nix
           home-manager-stable.nixosModules.home-manager
           {
@@ -91,7 +96,10 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username}.imports = [nvf.homeManagerModules.default inputs.nix-openclaw.homeManagerModules.openclaw ./hosts/falcon/home.nix];
+              users.${username}.imports = [
+                nvf.homeManagerModules.default
+                ./hosts/falcon/home.nix
+              ];
             };
           }
         ];

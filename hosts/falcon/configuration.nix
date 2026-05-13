@@ -5,7 +5,37 @@
   inputs,
   config,
   ...
-}: {
+}: let
+  hermesWebuiSrc = pkgs.fetchFromGitHub {
+    owner = "nesquena";
+    repo = "hermes-webui";
+    rev = "306dd2bf09ecdc988cbc41e932591feea12a8d72";
+    hash = "sha256-SVTk2zEUKpTkL5pVmrYajpq+ISqBofo0eg4Z3Et5XHg=";
+  };
+
+  hermesWebuiStart = pkgs.writeShellScript "hermes-webui-start" ''
+    set -euo pipefail
+
+    project=$(/run/current-system/sw/bin/hermes --version 2>&1 | ${pkgs.gawk}/bin/awk -F': ' '/^Project:/{print $2; exit}')
+    if [ -z "$project" ] || [ ! -f "$project/run_agent.py" ]; then
+      echo "Could not resolve Hermes Agent site-packages directory containing run_agent.py" >&2
+      exit 1
+    fi
+
+    python_env="''${project%/lib/python*/site-packages}"
+    python="$python_env/bin/python3"
+    if [ ! -x "$python" ]; then
+      echo "Could not resolve executable Hermes Python at $python" >&2
+      exit 1
+    fi
+
+    export HERMES_WEBUI_AGENT_DIR="$project"
+    export HERMES_WEBUI_PYTHON="$python"
+
+    cd ${hermesWebuiSrc}
+    exec "$python" ${hermesWebuiSrc}/bootstrap.py --foreground --no-browser --skip-agent-install
+  '';
+in {
   imports = [
     # Include the results of the hardware scan.
     ../../config/nh.nix
@@ -62,7 +92,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."${username}" = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "hermes"];
     shell = pkgs.zsh;
   };
 
@@ -70,65 +100,6 @@
   # $ nix search wget
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [
-      inputs.nix-openclaw.overlays.default
-      (final: prev: let
-        mkOpenclawPackages = {
-          toolNamesOverride ? null,
-          excludeToolNames ? [],
-        }: let
-          upstreamPackages = import "${inputs.nix-openclaw}/nix/packages" {
-            pkgs = final;
-            inherit toolNamesOverride excludeToolNames;
-          };
-        in
-          upstreamPackages
-          // {
-            openclaw-gateway = final.openclaw-gateway;
-            openclaw = final.buildEnv {
-              name = upstreamPackages.openclaw.name;
-              paths = [
-                final.openclaw-gateway
-                upstreamPackages.openclaw-tools
-              ];
-              pathsToLink = ["/bin"];
-            };
-          };
-        defaultOpenclawPackages = mkOpenclawPackages {};
-      in {
-        openclaw-gateway = prev.openclaw-gateway.overrideAttrs (old: {
-          installPhase =
-            old.installPhase
-            + "\n"
-            + ''
-              # Work around nix-openclaw packaging expecting plugin manifests
-              # under dist/extensions while they are currently installed under
-              # lib/openclaw/extensions.
-              if [ -d "$out/lib/openclaw/extensions" ]; then
-                mkdir -p "$out/lib/openclaw/dist/extensions"
-                for ext in "$out"/lib/openclaw/extensions/*; do
-                  [ -d "$ext" ] || continue
-                  name="$(basename "$ext")"
-                  mkdir -p "$out/lib/openclaw/dist/extensions/$name"
-                  if [ -e "$ext/openclaw.plugin.json" ] && [ ! -e "$out/lib/openclaw/dist/extensions/$name/openclaw.plugin.json" ]; then
-                    cp "$ext/openclaw.plugin.json" "$out/lib/openclaw/dist/extensions/$name/openclaw.plugin.json"
-                  fi
-                done
-              fi
-            '';
-        });
-        openclaw = defaultOpenclawPackages.openclaw;
-        openclawPackages =
-          defaultOpenclawPackages
-          // {
-            toolNames =
-              (import "${inputs.nix-openclaw}/nix/tools/extended.nix" {
-                pkgs = final;
-              }).toolNames;
-            withTools = mkOpenclawPackages;
-          };
-      })
-    ];
   };
   programs = {
     neovim = {
@@ -145,12 +116,12 @@
   ];
 
   age.secrets = {
+    hermes-env = {
+      file = ./secrets/hermes-env.age;
+      owner = "hermes";
+    };
     telegram-bot-token = {
       file = ./secrets/telegram-bot-token.age;
-      owner = username;
-    };
-    openclaw-gateway-token-env = {
-      file = ./secrets/openclaw-gateway-token-env.age;
       owner = username;
     };
     gog-keyring-env = {
@@ -160,22 +131,6 @@
     nextcloud-admin-pass = {
       file = ./secrets/nextcloud-admin-pass.age;
       owner = "nextcloud";
-    };
-  };
-
-  # Keep agenix integration centralized in the host module.
-  home-manager.users.${username} = let
-    openclawGatewayWrapper = pkgs.writeShellScriptBin "openclaw-gateway-default" ''
-      set -euo pipefail
-      exec "${pkgs.openclaw-gateway}/bin/openclaw" "$@"
-    '';
-  in {
-    systemd.user.services.openclaw-gateway.Service = {
-      EnvironmentFile = [
-        config.age.secrets.openclaw-gateway-token-env.path
-        config.age.secrets.gog-keyring-env.path
-      ];
-      ExecStart = lib.mkForce "${openclawGatewayWrapper}/bin/openclaw-gateway-default gateway --port 18789";
     };
   };
 
@@ -189,9 +144,58 @@
       environment.WEBHOOK_URL = "https://nnn.my.to/";
     };
 
+    hermes-agent = {
+      enable = true;
+      addToSystemPackages = true;
+      environmentFiles = [config.age.secrets.hermes-env.path];
+      extraPackages = with pkgs; [
+        inputs.nixpkgs.legacyPackages.${stdenv.hostPlatform.system}.gws
+        uv
+        (python3.withPackages (ps: [
+          ps.google-api-python-client
+          ps.google-auth-httplib2
+          ps.google-auth-oauthlib
+        ]))
+      ];
+      settings = {
+        model = {
+          provider = "openai-codex";
+          default = "gpt-5.5";
+          base_url = "https://chatgpt.com/backend-api/codex";
+        };
+
+        custom_providers = [
+          {
+            name = "The Claw Bay";
+            base_url = "https://api.theclawbay.com/v1";
+            model = "gpt-5.5";
+            key_env = "THECLAWBAY_API_KEY";
+            api_mode = "chat_completions";
+          }
+        ];
+
+        memory.provider = "holographic";
+
+        display = {
+          tool_progress_command = true;
+          platforms.telegram = {
+            tool_progress = "verbose";
+            tool_preview_length = 0;
+          };
+        };
+
+        plugins.hermes-memory-store = {
+          db_path = "$HERMES_HOME/memory_store.db";
+          auto_extract = false;
+          default_trust = 0.5;
+          hrr_dim = 1024;
+        };
+      };
+    };
+
     nextcloud = {
       enable = true;
-      package = pkgs.nextcloud32;
+      package = pkgs.nextcloud33;
       database.createLocally = true;
       hostName = "yim.my.to";
       config = {
@@ -234,6 +238,62 @@
     };
 
     openssh.enable = true;
+    tailscale.enable = true;
+  };
+
+  systemd.services.hermes-webui = {
+    description = "Hermes WebUI";
+    after = ["network-online.target" "hermes-agent.service"];
+    wants = ["network-online.target"];
+    wantedBy = ["multi-user.target"];
+
+    environment = {
+      HOME = "/var/lib/hermes";
+      HERMES_HOME = "/var/lib/hermes/.hermes";
+      HERMES_CONFIG_PATH = "/var/lib/hermes/.hermes/config.yaml";
+      HERMES_MANAGED = "true";
+      HERMES_SKIP_CHMOD = "1";
+      HERMES_WEBUI_STATE_DIR = "/var/lib/hermes/.hermes/webui";
+      HERMES_WEBUI_DEFAULT_WORKSPACE = "/var/lib/hermes/workspace";
+      HERMES_WEBUI_HOST = "127.0.0.1";
+      HERMES_WEBUI_PORT = "8787";
+      HERMES_WEBUI_SKIP_ONBOARDING = "1";
+    };
+
+    path = with pkgs; [
+      git
+      coreutils
+      findutils
+      gawk
+      gnugrep
+      gnused
+      uv
+      inputs.nixpkgs.legacyPackages.${stdenv.hostPlatform.system}.gws
+      (python3.withPackages (ps: [
+        ps.google-api-python-client
+        ps.google-auth-httplib2
+        ps.google-auth-oauthlib
+      ]))
+    ];
+
+    serviceConfig = {
+      User = "hermes";
+      Group = "hermes";
+      WorkingDirectory = "/var/lib/hermes/workspace";
+      ExecStart = hermesWebuiStart;
+      EnvironmentFile = [config.age.secrets.hermes-env.path];
+      Restart = "always";
+      RestartSec = 5;
+      UMask = "0007";
+      PrivateTmp = true;
+      ProtectSystem = "strict";
+      ProtectHome = false;
+      ReadWritePaths = [
+        "/var/lib/hermes"
+        "/var/lib/hermes/workspace"
+        "/home/yim/nix-config"
+      ];
+    };
   };
 
   security.acme = {
@@ -246,6 +306,36 @@
   };
 
   nix.settings.trusted-users = ["yim"];
+
+  systemd.services.hermes-agent.serviceConfig.NoNewPrivileges = lib.mkForce false;
+
+  security.sudo.extraRules = [
+    {
+      users = ["hermes"];
+      commands = [
+        {
+          command = "ALL";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
+
+  system.activationScripts.hermesNixConfigAccess.text = ''
+    ${pkgs.acl}/bin/setfacl -m u:hermes:x /home/yim
+
+    if [ -d /home/yim/nix-config ]; then
+      ${pkgs.acl}/bin/setfacl -m u:hermes:rwx /home/yim/nix-config
+
+      ${pkgs.findutils}/bin/find /home/yim/nix-config \
+        -path /home/yim/nix-config/.git -prune -o \
+        -exec ${pkgs.acl}/bin/setfacl -m u:hermes:rwX {} +
+
+      ${pkgs.findutils}/bin/find /home/yim/nix-config \
+        -path /home/yim/nix-config/.git -prune -o \
+        -type d -exec ${pkgs.acl}/bin/setfacl -d -m u:hermes:rwX {} +
+    fi
+  '';
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [80 443];

@@ -68,9 +68,7 @@ nh home switch
 1. **stateVersion**: Never change without reading migration notes
 2. **hardware-configuration.nix**: Auto-generated, don't edit manually
 3. **Flake path**: Expected at `~/nix-config` for `nh` commands
-4. **OpenClaw config**: Uses nix-openclaw — don't edit `openclaw.json` or Nix-generated workspace files directly; update the Nix source here instead
-5. **OpenClaw runtime env**: `OPENCLAW_TELEGRAM_ALLOW_FROM` and other OpenClaw secrets come from `/run/agenix/openclaw-gateway-token-env` via a zsh wrapper in `hosts/falcon/home.nix`; in non-interactive contexts, run `zsh -ic 'openclaw <cmd>'` or source that file before invoking `openclaw`
-6. **Gog runtime env**: `GOG_KEYRING_PASSWORD` should come from `/run/agenix/gog-keyring-env` via the zsh wrapper in `hosts/falcon/home.nix`; in non-interactive contexts, run `zsh -ic 'gog <cmd>'` or source that file before invoking `gog`.
-7. **Homebrew on macOS**: Managed declaratively via nix-darwin
-8. **Secrets**: Never commit `.env`, credentials, or API keys
-9. **Validating new files with flake refs (`.#...`)**: Stage new files first (`git add <file>`), because Git-based flake evaluation excludes untracked files. If you do not want to stage yet, use `path:.#...` for local-only validation.
+4. **Gog runtime env**: `GOG_KEYRING_PASSWORD` should come from `/run/agenix/gog-keyring-env` via the zsh wrapper in `hosts/falcon/home.nix`; in non-interactive contexts, run `zsh -ic 'gog <cmd>'` or source that file before invoking `gog`.
+5. **Homebrew on macOS**: Managed declaratively via nix-darwin
+6. **Secrets**: Never commit `.env`, credentials, or API keys
+7. **Validating new files with flake refs (`.#...`)**: Stage new files first (`git add <file>`), because Git-based flake evaluation excludes untracked files. If you do not want to stage yet, use `path:.#...` for local-only validation.

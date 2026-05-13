@@ -10,11 +10,11 @@
 
   nixpkgs = {
     config.allowUnfree = true;
+    hostPlatform = "aarch64-darwin";
     overlays = [
       (_final: prev: {
-        direnv = prev.direnv.override {
-          zsh = inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system}.zsh;
-        };
+        ayugram-desktop =
+          inputs.nixpkgs-unstable-small.legacyPackages.${prev.stdenv.hostPlatform.system}.ayugram-desktop;
       })
     ];
   };
@@ -49,6 +49,7 @@
       "steipete/tap/codexbar"
       "floorp"
       "font-sf-pro"
+      "freeshow"
       "hammerspoon"
       "helium-browser"
       "karabiner-elements"
@@ -122,7 +123,4 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 6;
-
-  # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = "aarch64-darwin";
 }

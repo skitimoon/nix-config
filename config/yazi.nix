@@ -20,9 +20,14 @@
           desc = "Cd to /";
         }
         {
-          on = ["g" "p"];
+          on = ["g" "o"];
           run = "cd ~/Projects/ppm-odoo/";
           desc = "Cd to ~/Projects/ppm-odoo/";
+        }
+        {
+          on = ["g" "p"];
+          run = "cd ~/Projects/";
+          desc = "Cd to ~/Projects/";
         }
         {
           on = ["g" "t"];

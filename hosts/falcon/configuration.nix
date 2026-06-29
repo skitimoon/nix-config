@@ -6,12 +6,16 @@
   config,
   ...
 }: let
-  hermesWebuiSrc = pkgs.fetchFromGitHub {
-    owner = "nesquena";
-    repo = "hermes-webui";
-    rev = "306dd2bf09ecdc988cbc41e932591feea12a8d72";
-    hash = "sha256-SVTk2zEUKpTkL5pVmrYajpq+ISqBofo0eg4Z3Et5XHg=";
-  };
+  hermesWebuiSrc = inputs.hermes-webui;
+  hermesToolPackages = [
+    inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.gws
+    pkgs.uv
+    (pkgs.python3.withPackages (ps: [
+      ps.google-api-python-client
+      ps.google-auth-httplib2
+      ps.google-auth-oauthlib
+    ]))
+  ];
 
   hermesWebuiStart = pkgs.writeShellScript "hermes-webui-start" ''
     set -euo pipefail
@@ -141,22 +145,17 @@ in {
   services = {
     n8n = {
       enable = true;
-      environment.WEBHOOK_URL = "https://nnn.my.to/";
+      environment = {
+        N8N_LISTEN_ADDRESS = "127.0.0.1";
+        WEBHOOK_URL = "https://nnn.my.to/";
+      };
     };
 
     hermes-agent = {
       enable = true;
       addToSystemPackages = true;
       environmentFiles = [config.age.secrets.hermes-env.path];
-      extraPackages = with pkgs; [
-        inputs.nixpkgs.legacyPackages.${stdenv.hostPlatform.system}.gws
-        uv
-        (python3.withPackages (ps: [
-          ps.google-api-python-client
-          ps.google-auth-httplib2
-          ps.google-auth-oauthlib
-        ]))
-      ];
+      extraPackages = hermesToolPackages;
       settings = {
         model = {
           provider = "openai-codex";
@@ -164,13 +163,23 @@ in {
           base_url = "https://chatgpt.com/backend-api/codex";
         };
 
+        # NVIDIA NIM free tier as additional switchable models alongside the
+        # Codex default. Switch live with e.g.
+        #   /model custom:nvidia:z-ai/glm-5.1
+        # Requires NVIDIA_API_KEY (nvapi-...) in hermes-env.age. Note: a runtime
+        # switch reverts to the Codex default on the next `nixos-rebuild switch`,
+        # since the model block above is re-asserted on activation.
         custom_providers = [
           {
-            name = "The Claw Bay";
-            base_url = "https://api.theclawbay.com/v1";
-            model = "gpt-5.5";
-            key_env = "THECLAWBAY_API_KEY";
-            api_mode = "chat_completions";
+            name = "nvidia";
+            base_url = "https://integrate.api.nvidia.com/v1";
+            key_env = "NVIDIA_API_KEY";
+            models = {
+              "z-ai/glm-5.1" = {context_length = 203000;};
+              "moonshotai/kimi-k2.6" = {context_length = 262000;};
+              "deepseek-ai/deepseek-v4-pro" = {context_length = 1000000;};
+              "minimaxai/minimax-m3" = {context_length = 1000000;};
+            };
           }
         ];
 
@@ -202,6 +211,13 @@ in {
         adminpassFile = config.age.secrets.nextcloud-admin-pass.path;
         dbtype = "pgsql";
       };
+      settings.trusted_domains = [
+        "falcon"
+        "falcon.calliope-godzilla.ts.net"
+        "falcon.calliope-godzilla.ts.net:8443"
+        "100.110.98.106"
+      ];
+      settings.trusted_proxies = ["127.0.0.1"];
       https = true;
     };
 
@@ -213,20 +229,37 @@ in {
     nginx.virtualHosts.${config.services.nextcloud.hostName} = {
       forceSSL = true;
       enableACME = true;
+      serverAliases = [
+        "falcon"
+        "falcon.calliope-godzilla.ts.net"
+        "100.110.98.106"
+      ];
     };
 
-    nginx.virtualHosts."nnn.my.to" = {
-      forceSSL = true;
-      enableACME = true;
-      locations = {
-        "/" = {
-          proxyPass = "http://127.0.0.1:5678/";
-          proxyWebsockets = true;
-        };
+    nginx.virtualHosts."nextcloud-tailnet.local" = {
+      listen = [
+        {
+          addr = "127.0.0.1";
+          port = 8444;
+        }
+      ];
+      locations."/" = {
+        proxyPass = "https://127.0.0.1";
+        recommendedProxySettings = false;
+        extraConfig = ''
+          proxy_ssl_server_name on;
+          proxy_ssl_name ${config.services.nextcloud.hostName};
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host falcon.calliope-godzilla.ts.net:8443;
+          proxy_set_header X-Forwarded-Host falcon.calliope-godzilla.ts.net:8443;
+          proxy_set_header X-Forwarded-Proto https;
+          proxy_set_header X-Forwarded-Ssl on;
+        '';
       };
     };
 
-    nginx.virtualHosts."gym.my.to" = {
+    nginx.virtualHosts."nnn.my.to" = {
       forceSSL = true;
       enableACME = true;
       locations = {
@@ -260,21 +293,16 @@ in {
       HERMES_WEBUI_SKIP_ONBOARDING = "1";
     };
 
-    path = with pkgs; [
-      git
-      coreutils
-      findutils
-      gawk
-      gnugrep
-      gnused
-      uv
-      inputs.nixpkgs.legacyPackages.${stdenv.hostPlatform.system}.gws
-      (python3.withPackages (ps: [
-        ps.google-api-python-client
-        ps.google-auth-httplib2
-        ps.google-auth-oauthlib
-      ]))
-    ];
+    path = with pkgs;
+      [
+        git
+        coreutils
+        findutils
+        gawk
+        gnugrep
+        gnused
+      ]
+      ++ hermesToolPackages;
 
     serviceConfig = {
       User = "hermes";
@@ -301,11 +329,15 @@ in {
     certs = {
       ${config.services.nextcloud.hostName}.email = "s.kitimoon+letsencrypt@gmail.com";
       "nnn.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
-      "gym.my.to".email = "s.kitimoon+letsencrypt@gmail.com";
     };
   };
 
   nix.settings.trusted-users = ["yim"];
+
+  systemd.services.n8n.path = with pkgs; [
+    nodejs
+    python3
+  ];
 
   systemd.services.hermes-agent.serviceConfig.NoNewPrivileges = lib.mkForce false;
 
@@ -365,5 +397,5 @@ in {
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = "26.11"; # Did you read the comment?
 }

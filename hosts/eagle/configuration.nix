@@ -20,7 +20,6 @@
     # <nixos-hardware/apple/macbook-pro/10-1>
     # <nixos-hardware/common/gpu/nvidia/disable>
     ../../config/nh.nix
-    ./macbook-pro.nix
     ./hardware-configuration.nix
   ];
 
@@ -40,6 +39,7 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   hardware.bluetooth.enable = true;
+  hardware.facetimehd.enable = true;
   services.blueman.enable = true;
 
   # Set your time zone.
@@ -125,6 +125,8 @@
 
     # Enable touchpad support (enabled default in most desktopManager).
     libinput.enable = true;
+    fstrim.enable = true;
+    mbpfan.enable = true;
   };
 
   security = {
@@ -147,7 +149,13 @@
   };
 
   hardware.enableAllFirmware = true;
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      # Required by the generated hardware config for this host's Broadcom Wi-Fi.
+      "broadcom-sta-6.30.223.271-59-6.18.33"
+    ];
+  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [

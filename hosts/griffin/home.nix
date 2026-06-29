@@ -12,11 +12,9 @@
 in {
   imports = [
     ../../config/git.nix
-    ../../config/kitty.nix
     ../../config/mpv.nix
     ../../config/nh.nix
     ../../config/nvf.nix
-    ../../config/opencode.nix
     ../../config/tridactyl.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
@@ -43,7 +41,9 @@ in {
     ayugram-desktop
     brave
     bun
+    claude-code
     code-cursor
+    cursor-cli
     devenv
     (discord.override {withVencord = true;})
     gemini-cli-bin
@@ -53,7 +53,8 @@ in {
     jankyborders
     # kiro # error when unpack
     localsend
-    logseq
+    # logseq
+    nixd
     nodejs
     oxfmt
     oxlint
@@ -65,7 +66,9 @@ in {
     sketchybar
     sketchybar-app-font
     super-productivity
+    texliveFull
     tldr
+    trash-cli
     unnaturalscrollwheels
     # vesktop
     # warp-terminal
@@ -73,7 +76,6 @@ in {
     zed-editor
 
     (callPackage ../../config/kdeconnect.nix {})
-    # (callPackage ../../config/osc.nix {})
   ];
 
   programs = {
@@ -88,9 +90,25 @@ in {
       enable = true;
     };
     # floorp.enable = true;
-    kitty.package = pkgs.runCommand "kitty-0.0.0" {} "mkdir $out";
+    kitty = {
+      enable = true;
+      # ponytail: Homebrew provides the signed app; Home Manager only writes config.
+      package = null;
+      font.name = "JetBrainsMono Nerd Font Mono";
+      settings = {
+        clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
+        enable_audio_bell = false;
+        macos_option_as_alt = true;
+        scrollback_lines = 50000;
+        visual_bell_duration = 0.5;
+      };
+    };
     lazygit.enable = true;
     nh.darwinFlake = "/Users/${username}/nix-config";
+    opencode = {
+      enable = true;
+      settings.plugin = ["@dietrichgebert/ponytail"];
+    };
     starship.enable = true;
     uv.enable = true;
     vscode.enable = true;

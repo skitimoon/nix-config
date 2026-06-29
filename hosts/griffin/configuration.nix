@@ -1,22 +1,17 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  # environment.systemPackages = [
-  # ];
+  services.openssh.enable = true;
 
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-darwin";
-    overlays = [
-      (_final: prev: {
-        ayugram-desktop =
-          inputs.nixpkgs-unstable-small.legacyPackages.${prev.stdenv.hostPlatform.system}.ayugram-desktop;
-      })
-    ];
+    # overlays = [
+    #   (final: prev: {
+    #     # Temporary: logseq in nixpkgs currently depends on insecure electron_39.
+    #     logseq = prev.logseq.override {electron_39 = final.electron;};
+    #   })
+    # ];
   };
 
   programs = {
@@ -42,6 +37,7 @@
       "antigravity"
       "BarutSRB/tap/omniwm"
       "betterzip"
+      "claude"
       "cloudflare-warp"
       "codex-app"
       "codexmonitor"
@@ -50,12 +46,14 @@
       "floorp"
       "font-sf-pro"
       "freeshow"
+      "guria/tap/nehir"
       "hammerspoon"
       "helium-browser"
       "karabiner-elements"
-      "kitty"
       "kiro"
+      "kitty"
       "legcord"
+      "logseq"
       "middleclick"
       "nextcloud"
       "obs"
@@ -77,12 +75,14 @@
     taps = [
       # "houmain/tap" # keymapper
       "BarutSRB/tap" # omniwm
+      "guria/tap" # nehir
       "steipete/tap" # codexbar
     ];
 
     masApps = {
       bitwarden = 1352778147;
       line = 539883307;
+      numbers = 361304891;
       sundaykeys = 1615360535;
       # xcode = 497799835;
     };

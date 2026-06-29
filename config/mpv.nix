@@ -6,8 +6,10 @@
       WHEEL_DOWN = "frame-step";
       "CTRL+j" = "script-message load-chat";
       c = "script-message chat-hidden";
+      k = "cycle pause";
       q = "quit-watch-later";
       Q = "quit";
+      "\\" = "set speed 1";
     };
     config = {
       cache-secs = 3600;

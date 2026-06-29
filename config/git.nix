@@ -1,7 +1,6 @@
 {
   programs.git = {
     enable = true;
-    lfs.enable = true;
     settings = {
       init.defaultBranch = "main";
       fetch.prune = true;
@@ -10,6 +9,6 @@
         name = "skitimoon";
       };
     };
-    ignores = [".kiro/" ".stfolder" ".stignore" "Session.vim" "scratchpad.*"];
+    ignores = [".kiro/" ".stfolder" ".stignore" "Session.vim" "scratchpad.*" "tmp/"];
   };
 }

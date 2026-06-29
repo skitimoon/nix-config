@@ -21,14 +21,17 @@
         autoload -Uz edit-command-line
         zle -N edit-command-line
         bindkey '^X^E' edit-command-line
+
+        # zsh-only word boundaries; not an environment variable.
+        WORDCHARS=''${WORDCHARS//[\/\\#]}
       '';
       sessionVariables = {
         LESS = "Fij.5JW";
-        WORDCHARS = "\${WORDCHARS//[\\/#]}";
       };
       syntaxHighlighting.enable = true;
       shellAliases = {
         ncf = "cd ~/nix-config && nvim && cd -";
+        cc = "nix run github:numtide/llm-agents.nix#claude-code -- --dangerously-skip-permissions";
         cx = "nix run github:numtide/llm-agents.nix#codex -- --yolo";
         l = "eza -lF";
         la = "eza -laF";

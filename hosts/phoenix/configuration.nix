@@ -5,7 +5,10 @@
 }: {
   imports = [../../config/nh.nix ./hardware-configuration.nix];
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["yim"];
+    };
     extraOptions = ''
       extra-substituters = https://devenv.cachix.org
       extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
@@ -13,7 +16,7 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config.permittedInsecurePackages = ["electron-39.8.10"];
   # Use the systemd-boot EFI boot loader.
   boot = {
     loader = {

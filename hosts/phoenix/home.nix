@@ -5,7 +5,7 @@
 }: {
   imports = [
     ../../config/git.nix
-    ../../config/kitty.nix
+    ../../config/linux-home.nix
     ../../config/mpv.nix
     ../../config/nvf.nix
     ../../config/tridactyl.nix
@@ -17,19 +17,11 @@
   home = {
     inherit username;
     homeDirectory = "/home/${username}";
-    stateVersion = "25.11";
-  };
-
-  programs.home-manager.enable = true;
-
-  xdg = {
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
+    stateVersion = "26.05";
   };
 
   home.packages = with pkgs; [
+    antigravity
     ayugram-desktop
     bat
     brave
@@ -38,6 +30,7 @@
     fd
     jq
     lazygit
+    legcord
     localsend
     logseq
     ripgrep
@@ -66,7 +59,4 @@
       enable = true;
     };
   };
-
-  # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
 }

@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ../../config/linux-home.nix
     ../../config/mpv.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
@@ -14,15 +15,6 @@
     username = "${username}";
     homeDirectory = "/home/${username}";
     stateVersion = "24.11";
-  };
-
-  programs.home-manager.enable = true;
-
-  xdg = {
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
   };
 
   home.packages = with pkgs; [
@@ -48,16 +40,6 @@
       enable = true;
       ignores = [".stfolder"];
     };
-    kitty = {
-      enable = true;
-      font.name = "JetBrainsMono Nerd Font Mono";
-      settings = {
-        enable_audio_bell = false;
-        scrollback_lines = 50000;
-        visual_bell_deration = 1.0;
-      };
-    };
-
     obs-studio.enable = true;
     starship.enable = true;
     vscode.enable = true;
@@ -68,7 +50,4 @@
     swaync.enable = true;
     syncthing.enable = true;
   };
-
-  # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
 }

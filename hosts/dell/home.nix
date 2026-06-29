@@ -5,6 +5,7 @@
 }: {
   imports = [
     ../../config/git.nix
+    ../../config/linux-home.nix
     ../../config/nh.nix
     ../../config/nvf.nix
     ../../config/yazi.nix
@@ -15,16 +16,7 @@
   home = {
     username = "${username}";
     homeDirectory = "/home/${username}";
-    stateVersion = "24.11";
-  };
-
-  programs.home-manager.enable = true;
-
-  xdg = {
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
+    stateVersion = "26.11";
   };
 
   home.packages = with pkgs; [
@@ -45,7 +37,4 @@
 
     starship.enable = true;
   };
-
-  # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
 }

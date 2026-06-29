@@ -95,6 +95,7 @@ in {
       # ponytail: Homebrew provides the signed app; Home Manager only writes config.
       package = null;
       font.name = "JetBrainsMono Nerd Font Mono";
+      themeFile = "Dracula";
       settings = {
         clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
         enable_audio_bell = false;

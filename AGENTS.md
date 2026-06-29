@@ -18,7 +18,7 @@ config/            # Shared tool configurations (nvf.nix, git.nix, zsh.nix, etc.
 
 ### Managed Systems
 - **phoenix** (NixOS unstable) - KDE Plasma 6, Wayland
-- **eagle**, **falcon** (NixOS stable 25.11)
+- **eagle**, **falcon** (NixOS stable 26.05)
 - **griffin** (macOS via nix-darwin) - Homebrew hybrid
 - **yim@dell** (Standalone Home Manager, x86_64-linux)
 
@@ -65,10 +65,5 @@ nh home switch
 - **nvf**: Neovim configuration framework
 
 ## Important Notes
-1. **stateVersion**: Never change without reading migration notes
-2. **hardware-configuration.nix**: Auto-generated, don't edit manually
-3. **Flake path**: Expected at `~/nix-config` for `nh` commands
-4. **Gog runtime env**: `GOG_KEYRING_PASSWORD` should come from `/run/agenix/gog-keyring-env` via the zsh wrapper in `hosts/falcon/home.nix`; in non-interactive contexts, run `zsh -ic 'gog <cmd>'` or source that file before invoking `gog`.
-5. **Homebrew on macOS**: Managed declaratively via nix-darwin
-6. **Secrets**: Never commit `.env`, credentials, or API keys
-7. **Validating new files with flake refs (`.#...`)**: Stage new files first (`git add <file>`), because Git-based flake evaluation excludes untracked files. If you do not want to stage yet, use `path:.#...` for local-only validation.
+1. **Flake path**: Expected at `~/nix-config` for `nh` commands
+2. **Homebrew on macOS**: Managed declaratively via nix-darwin

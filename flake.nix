@@ -4,8 +4,8 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    # nixpkgs-unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     # For macOS
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
@@ -17,12 +17,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-stable = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     nvf.url = "github:notashelf/nvf";
     agenix.url = "github:ryantm/agenix";
     hermes-agent.url = "github:NousResearch/hermes-agent";
+    hermes-webui = {
+      url = "github:nesquena/hermes-webui";
+      flake = false;
+    };
   };
 
   outputs = {

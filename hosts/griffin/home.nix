@@ -95,11 +95,14 @@ in {
       # ponytail: Homebrew provides the signed app; Home Manager only writes config.
       package = null;
       font.name = "JetBrainsMono Nerd Font Mono";
+      font.size = 13;
+      keybindings."ctrl+shift+t" = "new_tab_with_cwd";
       themeFile = "Dracula";
       settings = {
         clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
         enable_audio_bell = false;
         macos_option_as_alt = true;
+        notify_on_cmd_finish = "unfocused";
         scrollback_lines = 50000;
         visual_bell_duration = 0.5;
       };

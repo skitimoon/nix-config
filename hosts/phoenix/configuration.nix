@@ -16,7 +16,11 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = ["electron-39.8.10"];
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+    # Required by legcord after the pinned nixpkgs update.
+    "pnpm-10.29.2"
+  ];
   # Use the systemd-boot EFI boot loader.
   boot = {
     loader = {

@@ -8,6 +8,11 @@
   podmanDockerCompat = pkgs.runCommand "podman-docker-compat" {} ''
     mkdir -p "$out/bin"
     ln -s ${podmanPackage}/bin/podman "$out/bin/docker"
+
+    mkdir -p "$out/share/man/man1"
+    for f in ${podmanPackage.man}/share/man/man1/*; do
+      ln -s "$f" "$out/share/man/man1/$(basename "$f" | sed s/podman/docker/g)"
+    done
   '';
 in {
   imports = [

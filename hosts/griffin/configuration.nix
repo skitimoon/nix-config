@@ -35,7 +35,7 @@
     casks = [
       "affine"
       "antigravity"
-      # "BarutSRB/tap/omniwm"
+      "beeper"
       "betterzip"
       "claude"
       "cloudflare-warp"
@@ -45,7 +45,6 @@
       "floorp"
       "font-sf-pro"
       "freeshow"
-      # "guria/tap/nehir"
       "hammerspoon"
       "helium-browser"
       "karabiner-elements"
@@ -73,8 +72,6 @@
 
     taps = [
       # "houmain/tap" # keymapper
-      # "BarutSRB/tap" # omniwm
-      # "guria/tap" # nehir
       "steipete/tap" # codexbar
     ];
 

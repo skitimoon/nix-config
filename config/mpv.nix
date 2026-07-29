@@ -6,7 +6,13 @@
       WHEEL_DOWN = "frame-step";
       "CTRL+j" = "script-message load-chat";
       c = "script-message chat-hidden";
+      j = "seek -5";
+      J = "seek -10";
       k = "cycle pause";
+      l = "seek 5";
+      L = "seek 10";
+      p = "cycle sub";
+      P = "cycle sub down";
       q = "quit-watch-later";
       Q = "quit";
       "\\" = "set speed 1";

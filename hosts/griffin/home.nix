@@ -8,6 +8,11 @@
   podmanDockerCompat = pkgs.runCommand "podman-docker-compat" {} ''
     mkdir -p "$out/bin"
     ln -s ${podmanPackage}/bin/podman "$out/bin/docker"
+
+    mkdir -p "$out/share/man/man1"
+    for f in ${podmanPackage.man}/share/man/man1/*; do
+      ln -s "$f" "$out/share/man/man1/$(basename "$f" | sed s/podman/docker/g)"
+    done
   '';
 in {
   imports = [
@@ -45,6 +50,7 @@ in {
     code-cursor
     cursor-cli
     devenv
+    devin-desktop
     (discord.override {withVencord = true;})
     gemini-cli-bin
     ghostty-bin
@@ -72,7 +78,6 @@ in {
     unnaturalscrollwheels
     # vesktop
     # warp-terminal
-    windsurf
     zed-editor
 
     (callPackage ../../config/kdeconnect.nix {})
@@ -95,16 +100,23 @@ in {
       # ponytail: Homebrew provides the signed app; Home Manager only writes config.
       package = null;
       font.name = "JetBrainsMono Nerd Font Mono";
+      font.size = 13;
+      keybindings."ctrl+shift+t" = "new_tab_with_cwd";
       themeFile = "Dracula";
       settings = {
         clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
         enable_audio_bell = false;
         macos_option_as_alt = true;
+        notify_on_cmd_finish = "unfocused";
         scrollback_lines = 50000;
         visual_bell_duration = 0.5;
       };
     };
-    lazygit.enable = true;
+    lazygit = {
+      enable = true;
+      # ctrl+d/u (and pgup/pgdn, J/K) scroll the main panel by this many lines; default is 2.
+      settings.gui.scrollHeight = 20;
+    };
     nh.darwinFlake = "/Users/${username}/nix-config";
     opencode = {
       enable = true;

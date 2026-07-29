@@ -6,12 +6,6 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-darwin";
-    # overlays = [
-    #   (final: prev: {
-    #     # Temporary: logseq in nixpkgs currently depends on insecure electron_39.
-    #     logseq = prev.logseq.override {electron_39 = final.electron;};
-    #   })
-    # ];
   };
 
   programs = {
@@ -35,18 +29,16 @@
     casks = [
       "affine"
       "antigravity"
-      "BarutSRB/tap/omniwm"
+      "beeper"
       "betterzip"
       "claude"
       "cloudflare-warp"
       "codex-app"
-      "codexmonitor"
       "droidcam-obs"
       "steipete/tap/codexbar"
       "floorp"
       "font-sf-pro"
       "freeshow"
-      "guria/tap/nehir"
       "hammerspoon"
       "helium-browser"
       "karabiner-elements"
@@ -74,8 +66,6 @@
 
     taps = [
       # "houmain/tap" # keymapper
-      "BarutSRB/tap" # omniwm
-      "guria/tap" # nehir
       "steipete/tap" # codexbar
     ];
 

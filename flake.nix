@@ -4,12 +4,13 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nixpkgs-unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     # For macOS
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     # Home manager
     home-manager = {
@@ -31,6 +32,7 @@
 
   outputs = {
     nixpkgs,
+    nixpkgs-darwin,
     nixpkgs-stable,
     nix-darwin,
     home-manager,
@@ -119,7 +121,7 @@
           ./hosts/griffin/configuration.nix
           home-manager.darwinModules.home-manager
           {
-            users.users.${username}.home = nixpkgs.lib.mkDefault /Users/${username};
+            users.users.${username}.home = nixpkgs-darwin.lib.mkDefault /Users/${username};
             home-manager = {
               extraSpecialArgs = {
                 inherit inputs username;

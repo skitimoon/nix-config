@@ -32,7 +32,7 @@
     lazygit
     legcord
     localsend
-    logseq
+    # logseq
     ripgrep
     super-productivity
     thunderbird
@@ -48,11 +48,6 @@
     };
     floorp.enable = true;
     fzf.enable = true;
-
-    # obs-studio = {
-    #   enable = true;
-    #   plugins = [pkgs.obs-studio-plugins.droidcam-obs];
-    # };
 
     starship.enable = true;
     vscode = {

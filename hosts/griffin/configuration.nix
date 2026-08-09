@@ -6,12 +6,6 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-darwin";
-    # overlays = [
-    #   (final: prev: {
-    #     # Temporary: logseq in nixpkgs currently depends on insecure electron_39.
-    #     logseq = prev.logseq.override {electron_39 = final.electron;};
-    #   })
-    # ];
   };
 
   programs = {

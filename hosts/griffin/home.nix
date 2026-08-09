@@ -112,7 +112,23 @@ in {
         visual_bell_duration = 0.5;
       };
     };
-    lazygit.enable = true;
+    lazygit = {
+      enable = true;
+      # ctrl+d/u (and pgup/pgdn, J/K) scroll the main panel by this many lines; default is 2.
+      settings.gui.scrollHeight = 20;
+      # First entry is the default; `|` cycles to git's plain line diff.
+      settings.git.diffRenderers = [
+        {
+          type = "rawGit";
+          name = "color-words";
+          args = ["--color-words"];
+        }
+        {
+          type = "rawGit";
+          name = "default";
+        }
+      ];
+    };
     nh.darwinFlake = "/Users/${username}/nix-config";
     opencode = {
       enable = true;

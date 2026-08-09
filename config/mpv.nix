@@ -4,6 +4,7 @@
     bindings = {
       WHEEL_UP = "frame-back-step";
       WHEEL_DOWN = "frame-step";
+      "Shift+LEFT" = "seek -3";
       "CTRL+j" = "script-message load-chat";
       c = "script-message chat-hidden";
       j = "seek -5";

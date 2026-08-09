@@ -6,7 +6,6 @@
   config,
   ...
 }: let
-  hermesWebuiSrc = inputs.hermes-webui;
   hermesToolPackages = [
     inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.gws
     pkgs.uv
@@ -17,28 +16,7 @@
     ]))
   ];
 
-  hermesWebuiStart = pkgs.writeShellScript "hermes-webui-start" ''
-    set -euo pipefail
-
-    project=$(/run/current-system/sw/bin/hermes --version 2>&1 | ${pkgs.gawk}/bin/awk -F': ' '/^Project:/{print $2; exit}')
-    if [ -z "$project" ] || [ ! -f "$project/run_agent.py" ]; then
-      echo "Could not resolve Hermes Agent site-packages directory containing run_agent.py" >&2
-      exit 1
-    fi
-
-    python_env="''${project%/lib/python*/site-packages}"
-    python="$python_env/bin/python3"
-    if [ ! -x "$python" ]; then
-      echo "Could not resolve executable Hermes Python at $python" >&2
-      exit 1
-    fi
-
-    export HERMES_WEBUI_AGENT_DIR="$project"
-    export HERMES_WEBUI_PYTHON="$python"
-
-    cd ${hermesWebuiSrc}
-    exec "$python" ${hermesWebuiSrc}/bootstrap.py --foreground --no-browser --skip-agent-install
-  '';
+  hermesAgentPackage = config.services.hermes-agent.package;
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -274,8 +252,8 @@ in {
     tailscale.enable = true;
   };
 
-  systemd.services.hermes-webui = {
-    description = "Hermes WebUI";
+  systemd.services.hermes-dashboard = {
+    description = "Hermes Agent web dashboard";
     after = ["network-online.target" "hermes-agent.service"];
     wants = ["network-online.target"];
     wantedBy = ["multi-user.target"];
@@ -286,11 +264,6 @@ in {
       HERMES_CONFIG_PATH = "/var/lib/hermes/.hermes/config.yaml";
       HERMES_MANAGED = "true";
       HERMES_SKIP_CHMOD = "1";
-      HERMES_WEBUI_STATE_DIR = "/var/lib/hermes/.hermes/webui";
-      HERMES_WEBUI_DEFAULT_WORKSPACE = "/var/lib/hermes/workspace";
-      HERMES_WEBUI_HOST = "127.0.0.1";
-      HERMES_WEBUI_PORT = "8787";
-      HERMES_WEBUI_SKIP_ONBOARDING = "1";
     };
 
     path = with pkgs;
@@ -308,7 +281,7 @@ in {
       User = "hermes";
       Group = "hermes";
       WorkingDirectory = "/var/lib/hermes/workspace";
-      ExecStart = hermesWebuiStart;
+      ExecStart = "${hermesAgentPackage}/bin/hermes dashboard --skip-build --no-open --host 127.0.0.1 --port 9119";
       EnvironmentFile = [config.age.secrets.hermes-env.path];
       Restart = "always";
       RestartSec = 5;

@@ -24,10 +24,6 @@
     nvf.url = "github:notashelf/nvf";
     agenix.url = "github:ryantm/agenix";
     hermes-agent.url = "github:NousResearch/hermes-agent";
-    hermes-webui = {
-      url = "github:nesquena/hermes-webui";
-      flake = false;
-    };
   };
 
   outputs = {

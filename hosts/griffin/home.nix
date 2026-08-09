@@ -50,6 +50,7 @@ in {
     code-cursor
     cursor-cli
     devenv
+    devin-desktop
     (discord.override {withVencord = true;})
     gemini-cli-bin
     ghostty-bin
@@ -77,7 +78,6 @@ in {
     unnaturalscrollwheels
     # vesktop
     # warp-terminal
-    windsurf
     zed-editor
 
     (callPackage ../../config/kdeconnect.nix {})

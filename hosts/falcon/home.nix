@@ -20,6 +20,7 @@
 
   home.packages = with pkgs; [
     bat
+    codex
     eza
     gws
     lazygit

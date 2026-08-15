@@ -24,6 +24,7 @@
     nvf.url = "github:notashelf/nvf";
     agenix.url = "github:ryantm/agenix";
     hermes-agent.url = "github:NousResearch/hermes-agent";
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   outputs = {

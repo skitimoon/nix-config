@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   username,
   ...
 }: {
@@ -20,7 +21,7 @@
 
   home.packages = with pkgs; [
     bat
-    codex
+    inputs.llm-agents.packages.${pkgs.system}.codex
     eza
     gws
     lazygit

@@ -1,9 +1,22 @@
 {
   lib,
   pkgs,
+  inputs,
   username,
   ...
 }: let
+  llmAgentPackages = inputs.llm-agents.packages.${pkgs.system};
+  # 18.17.0's beforePack hook recompiles build/icon.iconset with iconutil and
+  # its own verifier rejects the result on macOS 26, failing the build. The
+  # repo ships a prebuilt build/icon.icns, which mac.icon already points at.
+  superProductivity = pkgs.super-productivity.overrideAttrs (old: {
+    postPatch =
+      old.postPatch
+      + ''
+        substituteInPlace electron-builder.yaml \
+          --replace-fail "beforePack: ./tools/beforePack.js" ""
+      '';
+  });
   podmanPackage = pkgs.podman;
   podmanDockerCompat = pkgs.runCommand "podman-docker-compat" {} ''
     mkdir -p "$out/bin"
@@ -46,13 +59,13 @@ in {
     ayugram-desktop
     brave
     bun
-    claude-code
     code-cursor
     cursor-cli
     devenv
     devin-desktop
     (discord.override {withVencord = true;})
-    gemini-cli-bin
+    llmAgentPackages.claude-code
+    llmAgentPackages.gemini-cli
     ghostty-bin
     google-chrome
     gws
@@ -71,7 +84,7 @@ in {
     ruff
     sketchybar
     sketchybar-app-font
-    super-productivity
+    superProductivity
     texliveFull
     tldr
     trash-cli
@@ -85,7 +98,10 @@ in {
 
   programs = {
     bat.enable = true;
-    codex.enable = true;
+    codex = {
+      enable = true;
+      package = llmAgentPackages.codex;
+    };
     direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -105,10 +121,12 @@ in {
       themeFile = "Dracula";
       settings = {
         clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
+        cursor_trail = 1;
         enable_audio_bell = false;
         macos_option_as_alt = true;
         notify_on_cmd_finish = "unfocused";
         scrollback_lines = 50000;
+        scrollbar = "always";
         visual_bell_duration = 0.5;
       };
     };

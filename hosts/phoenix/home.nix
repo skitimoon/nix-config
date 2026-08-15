@@ -29,6 +29,7 @@
     eza
     fd
     jq
+    kitty
     lazygit
     legcord
     localsend

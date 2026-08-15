@@ -169,6 +169,28 @@ in {
             tool_progress = "verbose";
             tool_preview_length = 0;
           };
+          platforms.discord = {
+            tool_progress = "verbose";
+            tool_preview_length = 0;
+          };
+        };
+
+        # Discord turns itself on when DISCORD_BOT_TOKEN appears in
+        # $HERMES_HOME/.env -- there is no enable flag, so the settings below do
+        # nothing until the token is added to hermes-env.age. Authorisation is
+        # DISCORD_ALLOWED_USERS in that same file, not anything here: with no
+        # allowlist the adapter denies every sender (fail-closed), which is the
+        # only thing standing between a stranger's DM and an agent holding
+        # passwordless root sudo.
+        discord = {
+          # Never answer an unaddressed message in a server channel. The bot
+          # still replies to DMs and to explicit @mentions.
+          require_mention = true;
+          # Backfill replays surrounding channel scrollback into the prompt when
+          # triggered, so messages from people NOT in the allowlist end up in
+          # context. Off until you decide that is wanted.
+          history_backfill = false;
+          missed_message_backfill.enabled = false;
         };
 
         plugins.hermes-memory-store = {
@@ -202,6 +224,23 @@ in {
     nginx = {
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
+
+      # Origin rewriting for the Hermes dashboard shim below. Two maps rather
+      # than one because an absent Origin and a wrong Origin need different
+      # answers: Hermes allows the former (non-browser clients) and rejects
+      # the latter, so collapsing them into a single default would either
+      # break curl or silently accept cross-site handshakes.
+      commonHttpConfig = ''
+        map $http_origin $hermes_origin_ok {
+          default                                   0;
+          ""                                        1;
+          "https://falcon.calliope-godzilla.ts.net" 1;
+        }
+        map $http_origin $hermes_origin {
+          default                                   "";
+          "https://falcon.calliope-godzilla.ts.net" "http://127.0.0.1:9119";
+        }
+      '';
     };
 
     nginx.virtualHosts.${config.services.nextcloud.hostName} = {
@@ -233,6 +272,49 @@ in {
           proxy_set_header X-Forwarded-Host falcon.calliope-godzilla.ts.net:8443;
           proxy_set_header X-Forwarded-Proto https;
           proxy_set_header X-Forwarded-Ssl on;
+        '';
+      };
+    };
+
+    # The Hermes dashboard binds to loopback and rejects any Host header that
+    # isn't a loopback name (anti-DNS-rebinding, GHSA-ppp5-vxwm-4cf7), while
+    # `tailscale serve` forwards the original Host. This shim rewrites Host to
+    # what the dashboard expects, and re-implements the rejected check here so
+    # the rebinding defence isn't simply dropped: anything arriving on this
+    # port without the tailnet hostname is refused before it reaches Hermes.
+    #
+    # WebSocket upgrades need the same treatment for Origin. FastAPI runs no
+    # HTTP middleware on WS routes, so Hermes repeats the check inline there
+    # and additionally requires Origin to name the bound host. Origin is the
+    # only thing standing between a random site the browser visits and
+    # /api/console, so it is validated here before being rewritten -- never
+    # rewritten unconditionally.
+    nginx.virtualHosts."hermes-tailnet.local" = {
+      listen = [
+        {
+          addr = "127.0.0.1";
+          port = 8445;
+        }
+      ];
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:9119";
+        proxyWebsockets = true;
+        extraConfig = ''
+          if ($http_host != "falcon.calliope-godzilla.ts.net") {
+            return 421;
+          }
+          if ($hermes_origin_ok = 0) {
+            return 421;
+          }
+          proxy_set_header Host 127.0.0.1:9119;
+          # Empty value means nginx drops the header entirely, which is what
+          # the no-Origin case should look like to Hermes.
+          proxy_set_header Origin $hermes_origin;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Host falcon.calliope-godzilla.ts.net;
+          proxy_set_header X-Forwarded-Proto https;
+          proxy_redirect http://127.0.0.1:9119/ https://falcon.calliope-godzilla.ts.net/;
         '';
       };
     };
@@ -297,6 +379,47 @@ in {
     };
   };
 
+  # `tailscale serve` state is otherwise imperative and lives in tailscaled's
+  # database, so it silently drifts from this file (e.g. when the Hermes UI
+  # moved from 8787 to 9119). This unit is the source of truth: it resets the
+  # serve config and re-applies the mappings below on every activation.
+  systemd.services.tailscale-serve = {
+    description = "Declarative tailscale serve mappings";
+    after = ["tailscaled.service" "network-online.target"];
+    wants = ["network-online.target"];
+    requires = ["tailscaled.service"];
+    wantedBy = ["multi-user.target"];
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+
+    script = let
+      tailscale = "${config.services.tailscale.package}/bin/tailscale";
+    in ''
+      # Serve config is rejected until the backend has finished authenticating.
+      # The `|| true` matters: `tailscale status` exits non-zero while the
+      # daemon socket is still coming up, and a failing command substitution
+      # would abort this script under `set -e` before the retry ever happens.
+      state=""
+      for _ in $(seq 1 60); do
+        state=$(${tailscale} status --json 2>/dev/null | ${pkgs.jq}/bin/jq -r .BackendState 2>/dev/null || true)
+        [ "$state" = "Running" ] && break
+        sleep 2
+      done
+      if [ "$state" != "Running" ]; then
+        echo "tailscaled still in state '$state' after 120s; giving up" >&2
+        exit 1
+      fi
+
+      ${tailscale} serve reset
+      ${tailscale} serve --bg --yes --https=443 http://127.0.0.1:8445 # hermes-dashboard (via nginx Host shim)
+      ${tailscale} serve --bg --yes --https=5678 http://127.0.0.1:5678 # n8n
+      ${tailscale} serve --bg --yes --https=8443 http://127.0.0.1:8444 # nextcloud
+    '';
+  };
+
   security.acme = {
     acceptTerms = true;
     certs = {
@@ -332,9 +455,12 @@ in {
     if [ -d /home/yim/nix-config ]; then
       ${pkgs.acl}/bin/setfacl -m u:hermes:rwx /home/yim/nix-config
 
+      # Skip symlinks: setfacl follows them, and a `result` symlink left by
+      # `nixos-rebuild build` points into the read-only store, which fails the
+      # whole snippet and so fails activation.
       ${pkgs.findutils}/bin/find /home/yim/nix-config \
         -path /home/yim/nix-config/.git -prune -o \
-        -exec ${pkgs.acl}/bin/setfacl -m u:hermes:rwX {} +
+        ! -type l -exec ${pkgs.acl}/bin/setfacl -m u:hermes:rwX {} +
 
       ${pkgs.findutils}/bin/find /home/yim/nix-config \
         -path /home/yim/nix-config/.git -prune -o \

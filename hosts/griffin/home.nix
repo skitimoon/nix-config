@@ -61,6 +61,7 @@ in {
     bun
     code-cursor
     cursor-cli
+    delta
     devenv
     devin-desktop
     (discord.override {withVencord = true;})
@@ -134,8 +135,11 @@ in {
       enable = true;
       # ctrl+d/u (and pgup/pgdn, J/K) scroll the main panel by this many lines; default is 2.
       settings.gui.scrollHeight = 20;
-      # First entry is the default; `|` cycles to git's plain line diff.
+      # First entry is the default; `|` cycles through renderers.
       settings.git.diffRenderers = [
+        {
+          command = "delta --dark --paging=never";
+        }
         {
           type = "rawGit";
           name = "color-words";
@@ -143,7 +147,7 @@ in {
         }
         {
           type = "rawGit";
-          name = "default";
+          name = "line-diff";
         }
       ];
     };

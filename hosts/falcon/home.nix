@@ -3,7 +3,9 @@
   inputs,
   username,
   ...
-}: {
+}: let
+  llmAgentPackages = inputs.llm-agents.packages.${pkgs.system};
+in {
   imports = [
     ../../config/git.nix
     ../../config/linux-home.nix
@@ -22,7 +24,8 @@
 
   home.packages = with pkgs; [
     bat
-    inputs.llm-agents.packages.${pkgs.system}.codex
+    llmAgentPackages.codex
+    llmAgentPackages.grok
     eza
     gws
     lazygit
@@ -34,6 +37,7 @@
 
   programs = {
     fzf.enable = true;
+    gh.enable = true;
     starship.enable = true;
   };
 

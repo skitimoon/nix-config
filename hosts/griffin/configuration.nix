@@ -28,6 +28,7 @@
 
     casks = [
       "affine"
+      "aldente"
       "antigravity"
       "beeper"
       "betterzip"
@@ -52,15 +53,17 @@
       "opencode-desktop"
       "piphero"
       "protonvpn"
+      "raycast"
       "sf-symbols"
       "stats"
       "steam"
       "t3-code"
       "tailscale-app"
-      "thaw"
+      # "thaw"  Requirements: macOS >= 26
       "trae"
       "wacom-tablet"
       "wispr-flow"
+      "zcode"
       "zen"
     ];
 

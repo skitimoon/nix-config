@@ -6,17 +6,6 @@
   ...
 }: let
   llmAgentPackages = inputs.llm-agents.packages.${pkgs.system};
-  # 18.17.0's beforePack hook recompiles build/icon.iconset with iconutil and
-  # its own verifier rejects the result on macOS 26, failing the build. The
-  # repo ships a prebuilt build/icon.icns, which mac.icon already points at.
-  superProductivity = pkgs.super-productivity.overrideAttrs (old: {
-    postPatch =
-      old.postPatch
-      + ''
-        substituteInPlace electron-builder.yaml \
-          --replace-fail "beforePack: ./tools/beforePack.js" ""
-      '';
-  });
   podmanPackage = pkgs.podman;
   podmanDockerCompat = pkgs.runCommand "podman-docker-compat" {} ''
     mkdir -p "$out/bin"
@@ -55,7 +44,6 @@ in {
   };
 
   home.packages = with pkgs; [
-    aldente
     aerospace
     ayugram-desktop
     brave
@@ -68,25 +56,23 @@ in {
     (discord.override {withVencord = true;})
     llmAgentPackages.claude-code
     llmAgentPackages.gemini-cli
+    llmAgentPackages.grok
     ghostty-bin
     google-chrome
     gws
     jankyborders
-    # kiro # error when unpack
     localsend
-    # logseq
     nixd
     nodejs
     oxfmt
     oxlint
     podman-compose
     podmanDockerCompat
-    raycast
     ripgrep
     ruff
     sketchybar
     sketchybar-app-font
-    superProductivity
+    super-productivity
     texliveFull
     tldr
     trash-cli

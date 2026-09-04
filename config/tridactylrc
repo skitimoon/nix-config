@@ -1,9 +1,16 @@
 set smoothscroll true
-set speed_step 0.25
 
-bind d scrollpage 0.5
-bind e scrollpage -0.5
-bind u scrollpage -0.5
+smoothscrollwizard
+bind <DC-e> scrollstart 0 100
+bind <DC-y> scrollstart 0 -100
+bind <D-d> scrollstart 0 500
+bind <D-e> scrollstart 0 -500
+bind <D-u> scrollstart 0 -500
+bind <UC-e> scrollstop
+bind <UC-y> scrollstop
+bind <U-d> scrollstop
+bind <U-e> scrollstop
+bind <U-u> scrollstop
 
 bind i focusinput -l
 bind E tabprev
@@ -31,14 +38,19 @@ bind <Escape> composite mode normal ; hidecmdline ; nohlsearch
 
 unbindurl ^https://feedly.com j
 unbindurl ^https://feedly.com k
-bindurl ^https://feedly.com l composite js document.querySelector(".ArticleTitle").href | tabopen -b
-bindurl ^https://feedly.com L composite js document.querySelector(".ArticleTitle").href | tabopen
+unbindurl ^https://feedly.com <D-l>
+unbindurl ^https://feedly.com <D-L>
+bindurl ^https://feedly.com <D-l> composite js document.querySelector(".ArticleTitle").href | tabopen -b
+bindurl ^https://feedly.com <D-L> composite js document.querySelector(".ArticleTitle").href | tabopen
 
 unbindurl ^https://www.youtube.com/watch .
 unbindurl ^https://www.youtube.com/watch f
 unbindurl ^https://www.youtube.com/watch j
+unbindurl ^https://www.youtube.com/watch <D-j>
 unbindurl ^https://www.youtube.com/watch k
+unbindurl ^https://www.youtube.com/watch <D-k>
 unbindurl ^https://www.youtube.com/watch l
+unbindurl ^https://www.youtube.com/watch <D-l>
 unbindurl ^https://www.youtube.com/watch m
 unbindurl ^https://www.youtube.com/watch p
 unbindurl ^https://www.youtube.com [[

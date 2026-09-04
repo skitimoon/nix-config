@@ -8,6 +8,7 @@
     ../../config/git.nix
     ../../config/linux-home.nix
     ../../config/nvf.nix
+    ../../config/opencode.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
   ];

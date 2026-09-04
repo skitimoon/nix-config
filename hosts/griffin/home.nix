@@ -33,6 +33,7 @@ in {
     ../../config/mpv.nix
     ../../config/nh.nix
     ../../config/nvf.nix
+    ../../config/opencode.nix
     ../../config/tridactyl.nix
     ../../config/yazi.nix
     ../../config/zsh.nix
@@ -152,10 +153,6 @@ in {
       ];
     };
     nh.darwinFlake = "/Users/${username}/nix-config";
-    opencode = {
-      enable = true;
-      settings.plugin = ["@dietrichgebert/ponytail"];
-    };
     starship.enable = true;
     uv.enable = true;
     vscode.enable = true;

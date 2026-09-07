@@ -13,6 +13,13 @@
       };
     };
     keymap = {
+      input.prepend_keymap = [
+        {
+          on = ["<Esc>"];
+          run = "close";
+          desc = "Cancel input";
+        }
+      ];
       mgr.append_keymap = [
         {
           on = ["g" "/"];

@@ -28,7 +28,7 @@
     playerctl
     ripgrep
     super-productivity
-    swww
+    awww
     thunderbird
     tldr
     tlwg

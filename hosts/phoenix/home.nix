@@ -21,7 +21,7 @@
   };
 
   home.packages = with pkgs; [
-    antigravity
+    antigravity-ide
     ayugram-desktop
     bat
     brave

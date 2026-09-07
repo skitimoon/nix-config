@@ -72,25 +72,25 @@
         ];
       };
 
-      eagle = nixpkgs-stable.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs username;
-        };
-        modules = [
-          ./hosts/eagle/configuration.nix
-          home-manager-stable.nixosModules.home-manager
-          {
-            home-manager = {
-              extraSpecialArgs = {
-                inherit inputs username;
-              };
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${username} = import ./hosts/eagle/home.nix;
-            };
-          }
-        ];
-      };
+      # eagle = nixpkgs-stable.lib.nixosSystem {
+      #   specialArgs = {
+      #     inherit inputs username;
+      #   };
+      #   modules = [
+      #     ./hosts/eagle/configuration.nix
+      #     home-manager-stable.nixosModules.home-manager
+      #     {
+      #       home-manager = {
+      #         extraSpecialArgs = {
+      #           inherit inputs username;
+      #         };
+      #         useGlobalPkgs = true;
+      #         useUserPackages = true;
+      #         users.${username} = import ./hosts/eagle/home.nix;
+      #       };
+      #     }
+      #   ];
+      # };
 
       falcon = nixpkgs-stable.lib.nixosSystem {
         specialArgs = {

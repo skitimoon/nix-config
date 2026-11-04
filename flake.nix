@@ -14,7 +14,6 @@
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    # nixpkgs-unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     # For macOS
     nix-darwin = {
@@ -32,8 +31,8 @@
     };
     nvf.url = "github:notashelf/nvf";
     agenix.url = "github:ryantm/agenix";
-    hermes-agent.url = "github:NousResearch/hermes-agent";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    t3code-nightly.url = "github:patrikduksin/t3code-nix";
   };
 
   outputs = {
@@ -98,7 +97,6 @@
         };
         modules = [
           inputs.agenix.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
           ./hosts/falcon/configuration.nix
           home-manager-stable.nixosModules.home-manager
           {

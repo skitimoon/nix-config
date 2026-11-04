@@ -75,6 +75,9 @@
       defaultEditor = true;
     };
 
+    # uv's downloaded CPython and manylinux wheels are generic-Linux binaries.
+    nix-ld.enable = true;
+
     zsh.enable = true;
   };
 
@@ -82,6 +85,15 @@
     git
     wget
   ];
+
+  # ppm-odoo scripts call `docker compose`; rootless Podman serves it, as on griffin.
+  virtualisation = {
+    containers.containersConf.settings.engine.compose_warning_logs = false;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
+  };
 
   age.secrets = {
     gog-keyring-env = {

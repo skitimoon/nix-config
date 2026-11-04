@@ -32,7 +32,6 @@
     nvf.url = "github:notashelf/nvf";
     agenix.url = "github:ryantm/agenix";
     llm-agents.url = "github:numtide/llm-agents.nix";
-    t3code-nightly.url = "github:patrikduksin/t3code-nix";
   };
 
   outputs = {

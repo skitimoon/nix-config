@@ -5,7 +5,10 @@
   ...
 }: let
   llmAgentPackages = inputs.llm-agents.packages.${pkgs.system};
-  t3codePackage = inputs.t3code-nightly.packages.${pkgs.system}.t3code;
+  t3codePackage = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.t3code;
+  # TODO: use pkgs.podman-compose once stable ships >= 1.6; 1.5.0 lacks the
+  # `up --wait` that ppm-odoo's dev scripts use (2026-11-04).
+  podmanCompose = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.podman-compose;
 in {
   imports = [
     ../../config/git.nix
@@ -30,16 +33,23 @@ in {
     llmAgentPackages.grok
     t3codePackage
     eza
+    gnumake
     gws
     jq
     lazygit
     nodejs
+    podmanCompose
     ripgrep
     tldr
     trash-cli
+    uv
   ];
 
   programs = {
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
     fzf.enable = true;
     gh.enable = true;
     starship.enable = true;
@@ -56,7 +66,8 @@ in {
       WorkingDirectory = "%h";
       Environment = [
         "T3CODE_HOME=%h/.t3"
-        "PATH=/etc/profiles/per-user/${username}/bin:%h/.nix-profile/bin:/run/current-system/sw/bin"
+        # /run/wrappers/bin: rootless Podman needs the setuid newuidmap/newgidmap.
+        "PATH=/run/wrappers/bin:/etc/profiles/per-user/${username}/bin:%h/.nix-profile/bin:/run/current-system/sw/bin"
       ];
       ExecStart = "${t3codePackage}/bin/t3 serve";
       Restart = "on-failure";

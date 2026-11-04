@@ -139,11 +139,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1793750192,
-        "narHash": "sha256-ueNHsKFN7SA7Lzk4DPnjWgpIET+IaJZ8uIIeDszen+Y=",
+        "lastModified": 1793780669,
+        "narHash": "sha256-6Gw3SLIXUr1AqakdcPdql07LdIwsXs/IdvOOJ1aljNw=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "78f777ba4f6141fca604a5cee3f6ff8dfab09f48",
+        "rev": "38235de70aec5e5ca95070e8e020be0f31cd8c03",
         "type": "github"
       },
       "original": {
@@ -281,22 +281,6 @@
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
-    "nixpkgs_5": {
-      "locked": {
-        "lastModified": 1792773339,
-        "narHash": "sha256-rZLrzrC6i+jnTAlvPZHogKDulY7WWDEv9hJeHieO7Zw=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "3ec636362e1816bc2f0888fa0fa2c69f1bc9e504",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nvf": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -327,8 +311,7 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-stable": "nixpkgs-stable",
-        "nvf": "nvf",
-        "t3code-nightly": "t3code-nightly"
+        "nvf": "nvf"
       }
     },
     "systems": {
@@ -343,24 +326,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "t3code-nightly": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_5"
-      },
-      "locked": {
-        "lastModified": 1793755598,
-        "narHash": "sha256-oe4gwjWEMdWrB4JJo015zbMi24BlVRvNPwkb/YHLVcY=",
-        "owner": "patrikduksin",
-        "repo": "t3code-nix",
-        "rev": "d7ebd24a14c36d91d9a4e10d641952f33e9ad03a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "patrikduksin",
-        "repo": "t3code-nix",
         "type": "github"
       }
     },

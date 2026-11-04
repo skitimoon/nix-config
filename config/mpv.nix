@@ -4,7 +4,10 @@
     bindings = {
       WHEEL_UP = "frame-back-step";
       WHEEL_DOWN = "frame-step";
-      "Shift+LEFT" = "seek -3";
+      LEFT = "seek -2";
+      RIGHT = "seek 1";
+      "SHIFT+LEFT" = "seek -5";
+      "SHIFT+RIGHT" = "seek 5";
       "CTRL+j" = "script-message load-chat";
       c = "script-message chat-hidden";
       j = "seek -5";

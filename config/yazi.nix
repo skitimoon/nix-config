@@ -13,6 +13,13 @@
       };
     };
     keymap = {
+      mgr.prepend_keymap = [
+        {
+          on = ["q"];
+          run = "close";
+          desc = "Close tab, or quit if last";
+        }
+      ];
       input.prepend_keymap = [
         {
           on = ["<Esc>"];

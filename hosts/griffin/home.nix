@@ -79,7 +79,6 @@ in {
     unnaturalscrollwheels
     # vesktop
     # warp-terminal
-    zed-editor
 
     (callPackage ../../config/kdeconnect.nix {})
   ];
@@ -98,7 +97,6 @@ in {
     gh = {
       enable = true;
     };
-    # floorp.enable = true;
     kitty = {
       enable = true;
       # ponytail: Homebrew provides the signed app; Home Manager only writes config.
@@ -142,6 +140,13 @@ in {
     starship.enable = true;
     uv.enable = true;
     vscode.enable = true;
+    yazi.keymap.mgr.append_keymap = [
+      {
+        on = ["g" "F"];
+        run = "shell 'open -a Finder .'";
+        desc = "Open current folder in Finder";
+      }
+    ];
     zsh = {
       initContent = lib.mkAfter ''eval "$(/opt/homebrew/bin/brew shellenv)"'';
     };

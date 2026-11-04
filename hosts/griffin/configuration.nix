@@ -50,7 +50,6 @@
       "middleclick"
       "nextcloud"
       "obs"
-      "opencode-desktop"
       "piphero"
       "protonvpn"
       "raycast"
@@ -58,12 +57,12 @@
       "stats"
       "steam"
       "t3-code"
+      "abue-ammar/tinycast/tinycast"
       "tailscale-app"
-      # "thaw"  Requirements: macOS >= 26
       "trae"
       "wacom-tablet"
       "wispr-flow"
-      "zcode"
+      "zed"
       "zen"
     ];
 

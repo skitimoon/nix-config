@@ -5,7 +5,7 @@
 }: {
   programs.opencode = {
     enable = true;
-    package = inputs.llm-agents.packages.${pkgs.system}.opencode2;
+    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2;
     settings.plugin = ["@dietrichgebert/ponytail"];
   };
 }

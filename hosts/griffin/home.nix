@@ -5,7 +5,7 @@
   username,
   ...
 }: let
-  llmAgentPackages = inputs.llm-agents.packages.${pkgs.system};
+  llmAgentPackages = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
   podmanPackage = pkgs.podman;
   podmanDockerCompat = pkgs.runCommand "podman-docker-compat" {} ''
     mkdir -p "$out/bin"
@@ -70,7 +70,15 @@ in {
     podmanDockerCompat
     ripgrep
     ruff
-    sketchybar
+    # macOS 27 alias fix, drop once FelixKratz/SketchyBar#849 is fixed upstream
+    (sketchybar.overrideAttrs {
+      src = fetchFromGitHub {
+        owner = "skitimoon";
+        repo = "SketchyBar";
+        rev = "2435a8bc7df533c7ddeeefeab384f510c8cd6153";
+        hash = "sha256-hKvCtj4JzbcKDwwFTcETx1u1m7S1L5elVriv8p4ZDJI=";
+      };
+    })
     sketchybar-app-font
     super-productivity
     texliveFull

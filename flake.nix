@@ -62,7 +62,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${username}.imports = [
-                nvf.homeManagerModules.default
+                nvf.homeModules.default
                 ./hosts/phoenix/home.nix
               ];
             };
@@ -106,7 +106,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${username}.imports = [
-                nvf.homeManagerModules.default
+                nvf.homeModules.default
                 ./hosts/falcon/home.nix
               ];
             };
@@ -131,7 +131,7 @@
               };
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username}.imports = [nvf.homeManagerModules.default ./hosts/griffin/home.nix];
+              users.${username}.imports = [nvf.homeModules.default ./hosts/griffin/home.nix];
             };
           }
         ];
@@ -143,7 +143,7 @@
       # Office Server
       "yim@dell" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [nvf.homeManagerModules.default ./hosts/dell/home.nix];
+        modules = [nvf.homeModules.default ./hosts/dell/home.nix];
         extraSpecialArgs = {
           inherit inputs username;
         };

@@ -31,7 +31,7 @@
       syntaxHighlighting.enable = true;
       shellAliases = {
         ncf = "cd ~/nix-config && nvim && cd -";
-        cc = "nix run --accept-flake-config github:numtide/llm-agents.nix#claude-code --";
+        cl = "nix run --accept-flake-config github:numtide/llm-agents.nix#claude-code --";
         cx = "nix run --accept-flake-config github:numtide/llm-agents.nix#codex --";
         oc = "nix run --accept-flake-config github:numtide/llm-agents.nix#opencode2 --";
         l = "eza -F=auto -l";

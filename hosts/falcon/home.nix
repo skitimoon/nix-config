@@ -4,8 +4,10 @@
   username,
   ...
 }: let
-  llmAgentPackages = inputs.llm-agents.packages.${pkgs.system};
-  t3codePackage = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.t3code;
+  llmAgentPackages = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  # Unwrapped: the default wrapper puts cursor-agent and opencode 1.x on PATH;
+  # the service below finds agents through the user profile instead.
+  t3codePackage = llmAgentPackages.t3code.unwrapped;
   # TODO: use pkgs.podman-compose once stable ships >= 1.6; 1.5.0 lacks the
   # `up --wait` that ppm-odoo's dev scripts use (2026-11-04).
   podmanCompose = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.podman-compose;

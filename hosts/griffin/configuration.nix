@@ -32,6 +32,7 @@
       "antigravity"
       "beeper"
       "betterzip"
+      "brave"
       "claude"
       "cloudflare-warp"
       "codex-app"

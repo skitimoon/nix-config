@@ -11,6 +11,9 @@
   # TODO: use pkgs.podman-compose once stable ships >= 1.6; 1.5.0 lacks the
   # `up --wait` that ppm-odoo's dev scripts use (2026-11-04).
   podmanCompose = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.podman-compose;
+  # TODO: use pkgs.bun once stable ships >= 1.4; 1.3.x is compiled for Haswell
+  # and dies with SIGILL on falcon's Ivy Bridge CPU (2026-11-13).
+  bunUnstable = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.bun;
 in {
   imports = [
     ../../config/git.nix
@@ -30,6 +33,7 @@ in {
 
   home.packages = with pkgs; [
     bat
+    bunUnstable
     llmAgentPackages.claude-code
     llmAgentPackages.codex
     llmAgentPackages.grok

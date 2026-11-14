@@ -15,6 +15,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
+    # ayugram-desktop fails to link on darwin with newer nixpkgs, drop once it builds again
+    nixpkgs-ayugram.url = "github:nixos/nixpkgs/0bb2eedc20e4739f29e8045034f2828ad7054f8f";
     # For macOS
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";

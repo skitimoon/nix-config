@@ -45,8 +45,8 @@ in {
 
   home.packages = with pkgs; [
     aerospace
-    ayugram-desktop
-    brave
+    # pinned in flake.nix until ayugram-desktop builds on darwin again
+    inputs.nixpkgs-ayugram.legacyPackages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
     bun
     code-cursor
     cursor-cli
